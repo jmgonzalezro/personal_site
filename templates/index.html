@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 </head>
 <body>
-    <!-- <h1>estética @ online / José M. González</h1> -->
-    <h1>generativist / Johnny Nelson</h1>
+    <h1>estética @ online / José M. González</h1>
     <h2>New Site</h2>
-    <p>Generativist's new site. </p>
+    <p>Ética, estética y hermenéutica online.</p>
     <h2>Timeline</h2>
     <ul> {% for post in posts %} <li><a href="/posts/{{ post.url }}">{{ post.title }}</a></li>
         {% endfor %}
