@@ -1,5 +1,20 @@
-title: "Mi primer artículo"
+---
+title: "The Left's Excesses"
+subtitle: 'hello world'
 date: "2023-10-01"
+---
+
+---
+
+### this is my desirjekkk
+
+---
+
+Este es un párrafo con una nota al margen a la izquierdaz[^nota1].
+
+[^nota1]: Esta es la nota al margen que aparecerá al final del artículo.
+
+Este es un párrafo con una nota al margen.{marginnote}Esta es la nota al margen que aparecerá a la derecha.{/marginnote}
 
 I've deliberately avoided talking about Trump and Trumpism since the inauguration. He's a deep gravity well of fuckery and caustic polarization, and we were extremely lucky to have achieved escape velocity. But, [Karen Stenner's recent interview on The Larger Us](https://open.spotify.com/episode/5V0Yra9Xj8T0of923vI1LM) gave me a reason to revisit it (from a safe, distant orbit).
 

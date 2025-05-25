@@ -9,10 +9,15 @@
 <body>
     <header class="post-header">
         <nav>
-            <a href="{{ url_for('index') }}">estética @ online</a> / <span>{{ title }}</span>
+            <a href="{{ url_for('index') }}">Estética @ online</a> / <span>{{ title }}</span>
         </nav>
         <hr></hr>
     </header>
+        <header>
+            <h1>{{ title }}</h1>
+            <h2>{{ subtitle }}</h2>
+            <time class="date">{{ date }}</time>
+        </header>
     <main>
         <article class="notebook-content">
             {{ content|safe }}
