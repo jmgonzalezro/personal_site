@@ -419,10 +419,13 @@ label.margin-toggle:not(.sidenote-number) {
 
 @media (max-width: 760px) {
     body {
-        width: auto;
         margin-left: 9%;
-        padding-left: auto;
-        padding-right: auto;
+    }
+    article {
+        margin-left: 0;
+        margin-right: 0;
+        width: 91%;
+        padding: 0;
     }
 
     hr,
