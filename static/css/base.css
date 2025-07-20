@@ -44,15 +44,22 @@ html {
     font-size: 15px;
 }
 
+:root {
+    --bg-color: #fffff8;
+    --text-color-main: #111;
+    --text-color-secondary: #737171;
+    --margin-left: 20%;
+}
+
 body {
     width: 87.5%;
     margin-top: 9.5rem;
-    margin-left: 20%;
+    margin-left: var(--margin-left);
     margin-right: auto;
     padding-left: 0%;
     font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-    background-color: #fffff8;
-    color: #111;
+    background-color: var(--bg-color);
+    color: var(--text-color-main);
     max-width: 1400px;
     counter-reset: sidenote-counter;
 }
@@ -106,7 +113,7 @@ p.subtitle {
 time {
     font-style: italic;
     font-size: 1.3rem;
-    color: #737171;
+    color: var(--text-color-secondary);
 }
 
 .numeral {
@@ -417,86 +424,103 @@ label.margin-toggle:not(.sidenote-number) {
     height: 100%;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
     body {
-        margin-left: 9%;
+        margin-left: 3%;
+        width: 96%;
+        max-width: 100vw;
+        font-size: 14px;
     }
     article {
         margin-left: 0;
         margin-right: 0;
-        width: 91%;
+        width: 98%;
         padding: 0;
     }
-
     hr,
     section > p,
     section > footer,
-    section > table {
-        width: 100%;
-    }
-
-    pre > code {
-        width: 97%;
-    }
-
+    section > table,
     section > dl,
     section > ol,
-    section > ul {
-        width: 90%;
+    section > ul,
+    figure,
+    blockquote p,
+    blockquote footer {
+        width: 100%;
+        max-width: 100vw;
     }
-
-    figure {
-        max-width: 90%;
+    pre > code {
+        width: 99%;
     }
-
     figcaption,
     figure.fullwidth figcaption {
         margin-right: 0%;
         max-width: none;
     }
-
     blockquote {
-        margin-left: 1.5em;
-        margin-right: 0em;
+        margin-left: 1em;
+        margin-right: 0;
+        padding: 0.5em 0;
+        font-size: 1.1rem;
     }
-
-    blockquote p,
-    blockquote footer {
-        width: 100%;
-    }
-
     label.margin-toggle:not(.sidenote-number) {
         display: inline;
     }
-
     .sidenote,
     .marginnote {
         display: none;
     }
-
     .margin-toggle:checked + .sidenote,
     .margin-toggle:checked + .marginnote {
         display: block;
-        float: left;
-        left: 1rem;
+        float: none;
+        left: 0;
         clear: both;
-        width: 95%;
-        margin: 1rem 2.5%;
+        width: 98%;
+        margin: 1rem 1%;
         vertical-align: baseline;
         position: relative;
     }
-
     label {
         cursor: pointer;
     }
-
     div.table-wrapper,
     table {
-        width: 85%;
+        width: 97%;
     }
-
     img {
         width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    html {
+        font-size: 13px;
+    }
+    body {
+        margin-left: 0;
+        padding-left: 0;
+        width: 100vw;
+        font-size: 12px;
+    }
+    h1, h2, h3 {
+        font-size: 1.1em;
+    }
+    .marginnote, .sidenote {
+        width: 100%;
+        font-size: 1rem;
+        position: static;
+    }
+    article, section, figure, div.table-wrapper, table {
+        width: 99vw;
+        margin: 0 auto;
+        max-width: 100vw;
+    }
+    img {
+        max-width: 100vw;
+        height: auto;
     }
 }
 
@@ -632,9 +656,8 @@ p.flash {
 
 /* Estilo para las marginnotes */
 .marginnote {
-    font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-    background-color: #fffff8;
-    color: #111;
+    background-color: var(--bg-color);
+    color: var(--text-color-main);
     position: absolute;
     right: 75%; /* Ajusta este valor según el diseño */
     width: 15%; /* Ancho de la nota al margen */

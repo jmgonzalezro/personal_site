@@ -2,7 +2,7 @@
 
 
 from markupsafe import Markup
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from datetime import datetime
 import markdown
 from markdown.extensions.footnotes import FootnoteExtension
@@ -33,15 +33,24 @@ def index():
 
     sorted_posts = sorted(posts, key=lambda x: x[1], reverse=True)
 
+    # Pagination logic
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    start = (page - 1) * per_page
+    end = start + per_page
+    paginated_posts = sorted_posts[start:end]
+
     processed_posts = [
         {
             "url": post[0][:-3],
             "title": post[0][:-3].replace('_', ' '),
             'date': post[1].strftime('%Y-%m-%d'),
         }
-        for post in sorted_posts
+        for post in paginated_posts
     ]
-    return render_template('index.html', posts=processed_posts)
+    total_pages = (len(sorted_posts) + per_page - 1) // per_page
+
+    return render_template('index.html', posts=processed_posts, page=page, total_pages=total_pages)
 
 
 @app.route('/posts/<post_name>')
@@ -61,7 +70,7 @@ def post(post_name):
         else:
             date = datetime.fromtimestamp(os.path.getctime(post_path)).strftime('%Y-%m-%d')
 
-        if subtitle == None:
+        if subtitle is None:
             subtitle = ' '
 
     # Reemplazar las etiquetas {marginnote} y {/marginnote} con HTML
