@@ -424,106 +424,6 @@ label.margin-toggle:not(.sidenote-number) {
     height: 100%;
 }
 
-@media (max-width: 900px) {
-    body {
-        margin-left: 3%;
-        width: 96%;
-        max-width: 100vw;
-        font-size: 14px;
-    }
-    article {
-        margin-left: 0;
-        margin-right: 0;
-        width: 98%;
-        padding: 0;
-    }
-    hr,
-    section > p,
-    section > footer,
-    section > table,
-    section > dl,
-    section > ol,
-    section > ul,
-    figure,
-    blockquote p,
-    blockquote footer {
-        width: 100%;
-        max-width: 100vw;
-    }
-    pre > code {
-        width: 99%;
-    }
-    figcaption,
-    figure.fullwidth figcaption {
-        margin-right: 0%;
-        max-width: none;
-    }
-    blockquote {
-        margin-left: 1em;
-        margin-right: 0;
-        padding: 0.5em 0;
-        font-size: 1.1rem;
-    }
-    label.margin-toggle:not(.sidenote-number) {
-        display: inline;
-    }
-    .sidenote,
-    .marginnote {
-        display: none;
-    }
-    .margin-toggle:checked + .sidenote,
-    .margin-toggle:checked + .marginnote {
-        display: block;
-        float: none;
-        left: 0;
-        clear: both;
-        width: 98%;
-        margin: 1rem 1%;
-        vertical-align: baseline;
-        position: relative;
-    }
-    label {
-        cursor: pointer;
-    }
-    div.table-wrapper,
-    table {
-        width: 97%;
-    }
-    img {
-        width: 100%;
-        height: auto;
-    }
-}
-
-@media (max-width: 600px) {
-    html {
-        font-size: 13px;
-    }
-    body {
-        margin-left: 0;
-        padding-left: 0;
-        width: 100vw;
-        font-size: 12px;
-    }
-    h1, h2, h3 {
-        font-size: 1.1em;
-    }
-    .marginnote, .sidenote {
-        width: 100%;
-        font-size: 1rem;
-        position: static;
-    }
-    article, section, figure, div.table-wrapper, table {
-        width: 99vw;
-        margin: 0 auto;
-        max-width: 100vw;
-    }
-    img {
-        max-width: 100vw;
-        height: auto;
-    }
-}
-
 input.wait-list {
     padding: 5px;
 }
@@ -646,15 +546,6 @@ p.flash {
     color: #007BFF;
 }
 
-@media (max-width: 768px) {
-    .footnotes li {
-        position: static;
-        width: 100%;
-        text-align: left;
-    }
-}
-
-/* Estilo para las marginnotes */
 .marginnote {
     background-color: var(--bg-color);
     color: var(--text-color-main);
@@ -670,43 +561,30 @@ p.flash {
     text-shadow: none;
 }
 
-.margin-toggle {
- cursor: pointer;
-}
-/* Ajuste para pantallas pequeñas */
-/* @media (max-width: 768px) { */
-/*    body { */
-/*        margin: 0 auto; */
-/*        max-width: 100%; /* Asegúrate de que el contenido no se desborde */ */
-/*        overflow-x: hidden; /* Evita el desplazamiento horizontal */ */
-/*    } */
-/**/
-/*     p, li { */
-/*         font-size: 1rem; */
-/*         line-height: 1.5; */
-/*         margin: 0.5rem 0; */
-/*     } */
-/**/
-/*     .marginnote { */
-/*         position: static; /* En pantallas pequeñas, las notas vuelven a su posición normal */ */
-/*         width: 100%; */
-/*         margin-top: 1rem; */
-/*     } */
-/**/
-/*     blockquote { */
-/*         margin-left: 0; */
-/*         margin-right: 0; */
-/*         padding: 0.5rem; */
-/*         font-size: 1rem; */
-/*     } */
-/**/
-/*     figure { */
-/*         max-width: 100%; */
-/*         margin: 0 auto; */
-/*     } */
-/**/
-/*     img { */
-/*         max-width: 100%; */
-/*         height: auto; */
-/*     } */
-/* } */
+@media (max-width: 600px) {
+    .marginnote, .sidenote {
+        display: none; /* Ocultar notas al margen en pantallas pequeñas */
+    }
+    body {
+        width: 84%; /* Ancho adaptado */
+        margin-left: 8%;
+        margin-right: 8%;
+        font-size: calc(1.5rem + 2vw); /* Ajuste proporcional */
+    }
+    h1 {
+        font-weight: 400;
+        margin-top: 4rem;
+        margin-bottom: 1.5rem;
+        font-size: 3.2rem;
+        line-height: 1;
+    }
+    h2, h3 {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        font-size: calc(1.8 + 0.5vw); /* Ajuste proporcional */
+    }
+    article, section {
+        width: 100%; /* Ancho adaptado */
+        font-size: 1.4rem;
+        line-height: 2rem;
+    }

@@ -1,32 +1,38 @@
-<!doctype html> <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E S T É T I C A</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-</head>
-<body>
-    <h1>Estética @ online / José M. González</h1>
-    <p class="subtitle"></p>
-    <section><p>
-            <label for="mn-demo" class="margin-toggle">⊕</label>
-            <input type="checkbox" id="mn-demo" class="margin-toggle">
-            <span class="marginnote">
-                </a><a href="https://github.com/jmgonzalezro" class="fa-stack fa-lg" rel="me">
-                  <i class="fa fa-square-o fa-stack-2x"></i>
-                  <i class="fa fa-github fa-stack-1x"></i>
-                </a><a href="https://linkedin.com/in/jmgonzalezro" class="fa-stack fa-lg" rel="me">
-                  <i class="fa fa-square-o fa-stack-2x"></i>
-                  <i class="fa fa-linkedin fa-stack-1x"></i>
-                </a></span>
-    </section></p>
-    <h2>Nuevos escritos, ahora en forma de Chapa</h2>
-    <p>Estética, dialéctica y algoritmos.</p>
-    <h2>Timeline</h2>
-    <ul> {% for post in posts %} <li><a href="/posts/{{ post.url }}">{{ post.title }}</a></li>
-        {% endfor %}
-    </ul>
-</body>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>E S T É T I C A</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    </head>
+    <body>
+        <head>
+                <h1></h1>
+        </head>
+        <section><article>
+                <h1>Estética @ online / José M. González</h1>
+                <h1></h1>
+                <p class="subtitle"></p>
+                <h2>Nuevos escritos, ahora en forma de Chapa
+                <label for="mn-demo" class="margin-toggle">⊕</label>
+                <input type="checkbox" id="mn-demo" class="margin-toggle">
+                <span class="marginnote">
+                    </a><a href="https://github.com/jmgonzalezro" class="fa-stack fa-lg" rel="me">
+                      <i class="fa fa-square-o fa-stack-2x"></i>
+                      <i class="fa fa-github fa-stack-1x"></i>
+                    </a><a href="https://linkedin.com/in/jmgonzalezro" class="fa-stack fa-lg" rel="me">
+                      <i class="fa fa-square-o fa-stack-2x"></i>
+                      <i class="fa fa-linkedin fa-stack-1x"></i>
+                    </a></span>
+        </section></article>
+        </h2>
+        <p>Estética, dialéctica y algoritmos.</p>
+        <h2>Timeline</h2>
+        <ul> {% for post in posts %} <li><a href="/posts/{{ post.url }}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </body>
 </html>
