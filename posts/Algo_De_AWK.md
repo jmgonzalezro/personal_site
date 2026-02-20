@@ -1,3 +1,7 @@
+---
+title: Un poco de AWK
+date: 2025-12-15
+---
 # Por qué deberías aprender un poco de AWK
 
 ![AWK y linux se llevan bien](https://opensource.com/sites/default/files/lead-images/linux-penguin.png)

@@ -1,3 +1,7 @@
+---
+title: Cosas esenciales que saber de Tmux
+date: 2025-11-22
+---
 # Tmux - Esenciales
 
 Tmux es una muy buena herramienta para manejar diferentes sesiones en la terminal y diferentes diseños. Puedes desconectarte de una sesión de Tmux y volverte a conectar más tarde y seguir donde lo habías dejado. Hay una gran cantidad de cosas que puedes configurar en tmux, desde teclas, barras, atajos, temas... y un montón de comandos que pueden llegar a sonar intimidantes. Sin embargo, con solo saber un puñado de ellos, que son bastante intuitivos, te pueden ayudar a lidiar con el día a día de una forma muy fácil y útil. Llevo usando Tmux por más de 4 años y nunca me había aventurado a pasar más allá de estos cuatro comandos básicos, y aun así he encontrado en la herramienta un montón de utilidad y placer a la hora de trabajar.

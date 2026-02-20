@@ -1,3 +1,7 @@
+---
+title: Music Players en Linux
+date: 2026-02-05
+---
 # El estado de los reproductores de música en Linux en el 2026
 
 Si todavía no lo sabes, todo el mundo está deshaciéndose de [microslop](https://www.windowscentral.com/artificial-intelligence/microslop-trends-on-social-media-backlash-to-microsofts-on-going-ai-obsession-continues) para empezar a usar sistemas que realmente respetan quién eres y los gustos que tienes. También, al parecer, hay mucha gente que está empezando a quitarse la suscripción de [spotify, que no deja de subir](https://www.theverge.com/news/862465/spotify-premium-us-price-increase-2026), para apropiarse de los medios tanto musicales como visuales que se me consumen a diario.

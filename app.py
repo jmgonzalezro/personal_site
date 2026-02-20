@@ -20,20 +20,23 @@ POSTS_DIR = 'posts'
 def index():
     posts = []
     for post in os.listdir(POSTS_DIR):
+
+
+
+
         if post.endswith(".md"):
             post_path = os.path.join(POSTS_DIR, post)
             with open(post_path, 'r') as f:
                 parsed_post = frontmatter.load(f)
-                post_date = parsed_post.get('date')
+                post_date = parsed_post.get('date', datetime.now()),
                 if post_date:
-                    post_date = datetime.strptime(post_date, '%Y-%m-%d')
-                else:
+                    pass
+                elif post_date:
                     post_date = datetime.fromtimestamp(os.path.getctime(post_path))
             posts.append((post, post_date))
 
-    sorted_posts = sorted(posts, key=lambda x: x[1], reverse=False)
+    sorted_posts = sorted(posts, key=lambda x: x[1], reverse=True)
 
-    # Pagination logic
     page = request.args.get('page', 1, type=int)
     per_page = 5
     start = (page - 1) * per_page
@@ -44,7 +47,7 @@ def index():
         {
             "url": post[0][:-3],
             "title": post[0][:-3].replace('_', ' '),
-            'date': post[1].strftime('%Y-%m-%d'),
+            'date': post[1],
         }
         for post in paginated_posts
     ]
@@ -74,7 +77,8 @@ def post(post_name):
         subtitle = parsed_post.get('subtitle')
         date = parsed_post.get('date')
         if date:
-            date = datetime.strptime(date, '%Y-%m-%d').strftime('%Y-%m-%d')
+            pass
+            # date = datetime.strptime(date, '%Y-%m-%d').strftime('%Y-%m-%d')
         else:
             date = datetime.fromtimestamp(os.path.getctime(post_path)).strftime('%Y-%m-%d')
 
