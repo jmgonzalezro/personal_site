@@ -2,7 +2,7 @@
 
 
 from markupsafe import Markup
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 from datetime import datetime
 import markdown
 from markdown.extensions.footnotes import FootnoteExtension
@@ -31,7 +31,7 @@ def index():
                     post_date = datetime.fromtimestamp(os.path.getctime(post_path))
             posts.append((post, post_date))
 
-    sorted_posts = sorted(posts, key=lambda x: x[1], reverse=True)
+    sorted_posts = sorted(posts, key=lambda x: x[1], reverse=False)
 
     # Pagination logic
     page = request.args.get('page', 1, type=int)
@@ -50,7 +50,15 @@ def index():
     ]
     total_pages = (len(sorted_posts) + per_page - 1) // per_page
 
-    return render_template('index.html', posts=processed_posts, page=page, total_pages=total_pages)
+    response = make_response(render_template('index.html', posts=processed_posts, page=page, total_pages=total_pages))
+    return set_no_cache_headers(response)
+
+
+def set_no_cache_headers(response):
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
 @app.route('/posts/<post_name>')
@@ -77,7 +85,8 @@ def post(post_name):
     content = re.sub(r'\{marginnote\}(.*?)\{\/marginnote\}', r'<span class="marginnote">\1</span>', content)
 
     html_content = Markup(markdown.markdown(content, extensions=[FootnoteExtension()]))
-    return render_template('post.html', content=html_content, title=title, date=date, subtitle=subtitle)
+    response = make_response(render_template('post.html', content=html_content, title=title, date=date, subtitle=subtitle))
+    return set_no_cache_headers(response)
 
 
 @app.route('/debug/posts')
