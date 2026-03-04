@@ -562,6 +562,14 @@ p.flash {
 }
 
 @media (max-width: 600px) {
+    article {
+        padding: 1rem;
+        margin-bottom: 2rem; /* Más espacio entre artículos */
+    }
+
+    h1, h2, h3 {
+        margin: 2rem 0 1rem; /* Ajusta espaciado para títulos */
+    }
     .marginnote, .sidenote {
         display: none; /* Ocultar notas al margen en pantallas pequeñas */
     }

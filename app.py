@@ -20,10 +20,6 @@ POSTS_DIR = 'posts'
 def index():
     posts = []
     for post in os.listdir(POSTS_DIR):
-
-
-
-
         if post.endswith(".md"):
             post_path = os.path.join(POSTS_DIR, post)
             with open(post_path, 'r') as f:
@@ -88,7 +84,7 @@ def post(post_name):
     # Reemplazar las etiquetas {marginnote} y {/marginnote} con HTML
     content = re.sub(r'\{marginnote\}(.*?)\{\/marginnote\}', r'<span class="marginnote">\1</span>', content)
 
-    html_content = Markup(markdown.markdown(content, extensions=[FootnoteExtension()]))
+    html_content = Markup(markdown.markdown(content, extensions=[FootnoteExtension(), 'extra']))
     response = make_response(render_template('post.html', content=html_content, title=title, date=date, subtitle=subtitle))
     return set_no_cache_headers(response)
 
