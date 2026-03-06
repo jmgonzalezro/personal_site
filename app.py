@@ -62,6 +62,9 @@ def set_no_cache_headers(response):
 
 @app.route('/posts/<post_name>')
 def post(post_name):
+    if '..' in post_name or not os.path.abspath(f"{POSTS_DIR}/{post_name}.md").startswith(os.path.abspath(POSTS_DIR)):
+        return 'Post no permitido.', 403
+
     post_path = f'{POSTS_DIR}/{post_name}.md'
     if not os.path.exists(post_path):
         return 'Post not found', 404
@@ -91,9 +94,7 @@ def post(post_name):
 
 @app.route('/debug/posts')
 def debug_posts():
-    files = os.listdir(POSTS_DIR)
-    return f"Archivos disponibles: {files}"
-
+  return 'Esta ruta ya no está disponible.', 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
