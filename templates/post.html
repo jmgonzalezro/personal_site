@@ -7,10 +7,18 @@
     <title>{{ title }}</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tufte.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}" type="text/css" media="all">
 </head>
 
 <body>
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar modo noche">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-square-o fa-stack-2x"></i>
+            <i id="mode-icon" class="fa fa-moon-o fa-stack-1x"></i>
+        </span>
+    </button>
     <header class="post-header">
         <nav>
             <a href="{{ url_for('index') }}">Estética @ online</a> / <span>{{ title }}</span>
@@ -33,5 +41,39 @@
         <hr>
         <a href="{{ url_for('index') }}">Volver al inicio</a>
     </footer>
+    
+    <script>
+        // Dark Mode Toggle Functionality
+        function toggleDarkMode() {
+            const body = document.body;
+            const modeIcon = document.getElementById('mode-icon');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                modeIcon.className = 'fa fa-moon-o fa-stack-1x';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                modeIcon.className = 'fa fa-sun-o fa-stack-1x';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme on page load
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const modeIcon = document.getElementById('mode-icon');
+            
+            if (savedTheme === 'dark' || (savedTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.setAttribute('data-theme', 'dark');
+                modeIcon.className = 'fa fa-sun-o fa-stack-1x';
+            } else {
+                modeIcon.className = 'fa fa-moon-o fa-stack-1x';
+            }
+        }
+
+        // Run on page load
+        initializeTheme();
+    </script>
 </body>
 </html>

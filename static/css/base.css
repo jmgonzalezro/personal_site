@@ -49,6 +49,21 @@ html {
     --text-color-main: #111;
     --text-color-secondary: #737171;
     --margin-left: 20%;
+    --link-bg-color: #fffff8;
+    --code-bg-color: #F9F1DD;
+    --border-color: #ccc;
+    --shadow-color: #fffff8;
+}
+
+/* Dark mode variables */
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color-main: #e8e8e8;
+    --text-color-secondary: #b0b0b0;
+    --link-bg-color: #1a1a1a;
+    --code-bg-color: #2d2d2d;
+    --border-color: #444;
+    --shadow-color: #1a1a1a;
 }
 
 body {
@@ -88,7 +103,7 @@ h3 {
     margin-top: 2.5rem;
     margin-bottom: 2.5rem;
     line-height: 0;
-    color: #737171;
+    color: var(--text-color-secondary);
 }
 
 hr {
@@ -96,7 +111,7 @@ hr {
     height: 1px;
     width: 55%;
     border: 0;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--border-color);
     margin: 1em 0;
     padding: 0;
 }
@@ -258,19 +273,73 @@ a:visited {
 
 a:link, .tufte-underline, .hover-tufte-underline:hover {
     text-decoration: none;
-    background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
-    background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
+    background: -webkit-linear-gradient(var(--link-bg-color), var(--link-bg-color)), -webkit-linear-gradient(var(--link-bg-color), var(--link-bg-color)), -webkit-linear-gradient(currentColor, currentColor);
+    background: linear-gradient(var(--link-bg-color), var(--link-bg-color)), linear-gradient(var(--link-bg-color), var(--link-bg-color)), linear-gradient(currentColor, currentColor);
     -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
     -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
     background-size: 0.05em 2px, 0.05em 2px, 1.5px 1.5px;
     background-repeat: no-repeat, no-repeat, repeat-x;
-    text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
+    text-shadow: 0.03em 0 var(--shadow-color), -0.03em 0 var(--shadow-color), 0 0.03em var(--shadow-color), 0 -0.03em var(--shadow-color), 0.06em 0 var(--shadow-color), -0.06em 0 var(--shadow-color), 0.09em 0 var(--shadow-color), -0.09em 0 var(--shadow-color), 0.12em 0 var(--shadow-color), -0.12em 0 var(--shadow-color), 0.15em 0 var(--shadow-color), -0.15em 0 var(--shadow-color);
     background-position: 0% 93%, 100% 93%, 0% 93%;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
     a:link, .tufte-underline, .hover-tufte-underline:hover {
         background-position-y: 87%, 87%, 87%;
+    }
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
+}
+
+.dark-mode-toggle .fa-stack {
+    color: var(--text-color-main);
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle .fa-stack-1x {
+    font-size: 1.2em; /* Hacer el icono interior un poco más grande */
+}
+
+.dark-mode-toggle:hover .fa-stack {
+    color: green;
+}
+
+.dark-mode-toggle:active .fa-stack {
+    transform: scale(0.95);
+}
+
+/* Social icons spacing fix */
+.social a {
+    text-decoration: none; 
+    text-shadow: unset; 
+    background: unset;
+    margin-right: 0; /* Eliminar margen derecho extra */
+}
+
+.social a:hover, .social a:active {
+    color: green;
+}
+
+/* Terminal Navigation Icon - sin margen extra */
+.terminal-nav {
+    /* Eliminar margin-left para que mantenga el espaciado natural */
+}
+
+@media (max-width: 600px) {
+    .dark-mode-toggle {
+        top: 15px;
+        right: 15px;
     }
 }
 
@@ -471,11 +540,11 @@ code[class*="language-"], pre[class*="language-"] {
     background: none; margin-left: 0; padding-left: 0;
 }
 code[class*="language-"] {
-    border-left: 5px solid #cccccc;
+    border-left: 5px solid var(--border-color);
     padding-left: 5px;
 }
 p > code, li > code, a > code, span.marginnote > code, span.sidenote > code{
-    background-color: #F9F1DD;
+    background-color: var(--code-bg-color);
 }
 
 #footer-banner {
