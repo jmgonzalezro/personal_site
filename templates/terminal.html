@@ -393,153 +393,202 @@ Tipo 'help' para ver comandos disponibles
         let commandHistory = [];
         let historyIndex = -1;
 
-        // CV Data with enhanced formatting
+        // CV Data with José Manuel González Rodríguez's real information
         const cvData = {
             whoami: `<div class="ascii-art">
     ╭─────────────────────────────────────────────────╮
-    │  👤 José M. González                            │
-    │  💼 Desarrollador Full Stack & Escritor         │
-    │  📍 España                                      │
-    │  💫 Especialista en estética digital            │
+    │  👤 José Manuel González Rodríguez              │
+    │  🤖 Data & Machine Learning Engineer            │
+    │  📍 Madrid, España                              │
+    │  💡 Senior ML Engineer & Data Scientist (7+ años) │
     ╰─────────────────────────────────────────────────╯
 </div>
-<span class="info">🚀 Apasionado por la intersección entre tecnología, filosofía y estética</span><br>
+<span class="info">🚀 Delivering high-performance, customer-centric AI solutions</span><br>
+<span class="info">🎯 Entrepreneurial mindset with academic and business background</span><br>
 <span class="success">📧 Email:</span> <span class="warning">jose@esteticaonline.com</span><br>
-<span class="success">🌐 Web:</span> <span class="warning">esteticaonline.com</span>`,
+<span class="success">🔗 LinkedIn:</span> <span class="warning">linkedin.com/in/jmgonzalezro</span><br>
+<span class="success">🐙 GitHub:</span> <span class="warning">github.com/jmgonzalezro</span>`,
 
             experience: `<div class="section-header">💼 EXPERIENCIA PROFESIONAL</div>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
 
-<span class="success">📍 Desarrollador Senior Full Stack</span> <span class="info">(2020-Presente)</span><br>
-   <span class="warning">▸</span> Desarrollo de aplicaciones web con Python/Flask y JavaScript<br>
-   <span class="warning">▸</span> Arquitectura de sistemas escalables y microservicios<br>
-   <span class="warning">▸</span> Mentoring de equipos junior y code reviews<br>
-   <span class="warning">▸</span> Implementación de CI/CD y DevOps practices<br><br>
+<span class="success">🤖 Machine Learning Lead</span> <span class="info">@ Minsait/Indra</span><br>
+<span class="warning">Febrero 2023 - Presente | Madrid, España | IT</span><br><br>
 
-<span class="success">📍 Desarrollador Web Full Stack</span> <span class="info">(2018-2020)</span><br>
-   <span class="warning">▸</span> Desarrollo de APIs REST robustas y documentadas<br>
-   <span class="warning">▸</span> Frontend moderno con React, Vue.js y TypeScript<br>
-   <span class="warning">▸</span> Optimización de rendimiento y SEO<br>
-   <span class="warning">▸</span> Integración con servicios cloud (AWS, GCP)<br><br>
+<span class="info">SCOTTISHPOWER/IBERDROLA:</span><br>
+   <span class="warning">▸</span> ML Lead en proyectos de extracción de texto para energía renovable<br>
+   <span class="warning">▸</span> Soluciones con LLMs para extracción de datos + OCR<br>
+   <span class="warning">▸</span> Docker y Kubernetes para containerización y deployment<br><br>
 
-<span class="success">📍 Programador Junior</span> <span class="info">(2016-2018)</span><br>
-   <span class="warning">▸</span> Desarrollo de scripts de automatización en Python<br>
-   <span class="warning">▸</span> Mantenimiento y refactoring de sistemas legacy<br>
-   <span class="warning">▸</span> Aprendizaje de mejores prácticas y patrones de diseño<br>
-   <span class="warning">▸</span> Colaboración en equipos ágiles (Scrum/Kanban)`,
+<span class="info">MAPFRE:</span><br>
+   <span class="warning">▸</span> ML Lead en proyectos de cross-selling para seguros<br>
+   <span class="warning">▸</span> IA & ML SOTA models para predicciones y clasificaciones<br>
+   <span class="warning">▸</span> Diseño de sistemas de monitoreo y benchmarking<br><br>
+
+<span class="info">ENDESA/ENEL SPAIN:</span><br>
+   <span class="warning">▸</span> Lead developer: predicción de consumo energético y facturación<br>
+   <span class="warning">▸</span> Refactoring y mantenimiento de 3 proyectos + automatización<br>
+   <span class="warning">▸</span> Team Manager (equipo interno y externo)<br>
+   <span class="warning">▸</span> Best practices en ML y Python, CI/CD<br><br>
+
+<span class="info">DRAGADOS:</span><br>
+   <span class="warning">▸</span> Lead proyectos cross-funcionales: extracción de datos<br>
+   <span class="warning">▸</span> Computer Vision para OCR y text parsing<br>
+   <span class="warning">▸</span> ML pipeline desde cero + automatización ETL<br>
+   <span class="warning">▸</span> Coach Agile y MVP mindset<br><br>
+
+<span class="success">🔬 ML Engineer & Data Scientist</span> <span class="info">@ Sanz Clima</span><br>
+<span class="warning">Agosto 2021 - Febrero 2023 | Madrid | Climatización</span><br>
+   <span class="warning">▸</span> Proyectos de soluciones business enfocadas en datos<br>
+   <span class="warning">▸</span> ETL con AWS (S3, Boto3, Athena, DynamoDB)<br>
+   <span class="warning">▸</span> Dashboards interactivos con GUI consumer-centric<br><br>
+
+<span class="success">📊 ML & Data Scientist</span> <span class="info">@ Ayscom</span><br>
+<span class="warning">Agosto 2020 - Agosto 2021 | Madrid | Telecomunicaciones</span><br>
+   <span class="warning">▸</span> +60% incremento en visualizaciones de datos para clientes<br>
+   <span class="warning">▸</span> Automatización: reducción 80% tiempo de extracción<br>
+   <span class="warning">▸</span> Procesos NLP para limpieza automática de datos<br><br>
+
+<span class="success">📈 Data Analyst</span> <span class="info">@ Sanitas</span><br>
+<span class="warning">Agosto 2017 - Agosto 2020 | Madrid | Seguros de Salud</span><br>
+   <span class="warning">▸</span> Extract, Transform, Process: presentaciones y visualizaciones<br>
+   <span class="warning">▸</span> Automatización de extracción y pre-procesamiento<br>
+   <span class="warning">▸</span> Mantenimiento de database para reportes históricos`,
 
             education: `<div class="section-header">🎓 FORMACIÓN ACADÉMICA</div>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
 
-<span class="success">🎓 Máster en Desarrollo de Software</span> <span class="info">(2018)</span><br>
-   Universidad Tecnológica<br>
-   <span class="warning">Especialización:</span> Arquitectura de Software y Sistemas Distribuidos<br>
-   <span class="warning">Proyecto Final:</span> Sistema de microservicios para e-commerce<br><br>
+<span class="success">🔬 PHD in Developmental Psychology and Machine Learning</span><br>
+<span class="info">Universidad Complutense de Madrid (UCM)</span><br>
+<span class="warning">Septiembre 2017 - Septiembre 2020</span><br>
+<span class="warning">Especialización:</span> Intersección entre psicología del desarrollo y ML<br><br>
 
-<span class="success">🎓 Grado en Ingeniería Informática</span> <span class="info">(2016)</span><br>
-   Universidad Politécnica<br>
-   <span class="warning">Especialización:</span> Sistemas y Redes<br>
-   <span class="warning">Nota Media:</span> 8.5/10 - Matrícula de Honor<br><br>
+<span class="success">🤖 Master in Data Science and Machine Learning</span><br>
+<span class="info">Universidad Complutense de Madrid (UCM)</span><br>
+<span class="warning">Septiembre 2019 - Agosto 2020</span><br>
+<span class="warning">Especialización:</span> Data Science y Machine Learning<br><br>
 
-<span class="success">📚 Certificaciones Profesionales:</span><br>
-   <span class="info">✓</span> AWS Solutions Architect Professional<br>
-   <span class="info">✓</span> Google Cloud Professional Developer<br>
-   <span class="info">✓</span> Certified Scrum Master (CSM)<br>
-   <span class="info">✓</span> MongoDB Certified Developer`,
+<span class="success">📊 Formación Continua:</span><br>
+   <span class="info">✓</span> 7+ años de experiencia práctica en ML/Data Science<br>
+   <span class="info">✓</span> Liderazgo técnico en múltiples sectores (IT, Energía, Seguros)<br>
+   <span class="info">✓</span> Especialización en Computer Vision y NLP<br>
+   <span class="info">✓</span> Experiencia en arquitecturas cloud (AWS, Azure)`,
 
             skills: `<div class="section-header">💻 HABILIDADES TÉCNICAS</div>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
 
-<span class="success">🔥 Lenguajes de Programación:</span><br>
-   <span class="warning">Python</span> (Avanzado)     <span class="progress-bar"><span class="progress-fill" style="width: 95%"></span></span> 95%<br>
-   <span class="warning">JavaScript</span> (Avanzado) <span class="progress-bar"><span class="progress-fill" style="width: 90%"></span></span> 90%<br>
-   <span class="warning">TypeScript</span> (Inter.)   <span class="progress-bar"><span class="progress-fill" style="width: 75%"></span></span> 75%<br>
-   <span class="warning">SQL</span> (Avanzado)        <span class="progress-bar"><span class="progress-fill" style="width: 85%"></span></span> 85%<br><br>
+<span class="success">🐍 Lenguajes de Programación:</span><br>
+   <span class="warning">Python</span> (Experto)        <span class="progress-bar"><span class="progress-fill" style="width: 95%"></span></span> 95%<br>
+   <span class="warning">SQL</span> (Avanzado)         <span class="progress-bar"><span class="progress-fill" style="width: 85%"></span></span> 85%<br>
+   <span class="warning">NoSQL</span> (Intermedio)     <span class="progress-bar"><span class="progress-fill" style="width: 75%"></span></span> 75%<br><br>
 
-<span class="success">🚀 Frameworks & Librerías:</span><br>
-   <span class="info">Backend:</span> Flask, Django, FastAPI, Node.js<br>
-   <span class="info">Frontend:</span> React, Vue.js, Angular, Svelte<br>
-   <span class="info">CSS:</span> Tailwind, Bootstrap, Sass/SCSS<br>
-   <span class="info">Testing:</span> Jest, Pytest, Cypress, Selenium<br><br>
+<span class="success">🤖 Machine Learning & AI:</span><br>
+   <span class="info">Frameworks:</span> SciKit Learn, XGBoost, Pandas<br>
+   <span class="info">Computer Vision:</span> OpenCV, Tesseract (OCR)<br>
+   <span class="info">NLP:</span> Text processing, LLMs, data extraction<br>
+   <span class="info">Algorithms:</span> KNN, KMeans, SOTA models<br><br>
 
-<span class="success">☁️ Cloud & DevOps:</span><br>
-   <span class="info">Cloud:</span> AWS (EC2, S3, Lambda), Google Cloud, Azure<br>
-   <span class="info">Containers:</span> Docker, Kubernetes, Docker Compose<br>
-   <span class="info">CI/CD:</span> GitHub Actions, GitLab CI, Jenkins<br>
-   <span class="info">Monitoring:</span> Prometheus, Grafana, ELK Stack<br><br>
+<span class="success">☁️ Cloud & Infrastructure:</span><br>
+   <span class="info">AWS:</span> S3, Boto3, Athena, DynamoDB, SageMaker<br>
+   <span class="info">Azure:</span> Machine Learning services<br>
+   <span class="info">Containers:</span> Docker, Kubernetes<br>
+   <span class="info">Databases:</span> CassandraDB, SQL, NoSQL<br><br>
 
-<span class="success">🗄️ Bases de Datos:</span><br>
-   <span class="info">Relacionales:</span> PostgreSQL, MySQL, SQLite<br>
-   <span class="info">NoSQL:</span> MongoDB, Redis, Elasticsearch<br>
-   <span class="info">Cache:</span> Redis, Memcached<br>
-   <span class="info">ORM:</span> SQLAlchemy, Prisma, Mongoose<br><br>
+<span class="success">🛠️ Desarrollo & DevOps:</span><br>
+   <span class="info">Version Control:</span> Git, Gitflow, Bitbucket<br>
+   <span class="info">Web Frameworks:</span> Flask<br>
+   <span class="info">Systems:</span> Linux, SSH<br>
+   <span class="info">CI/CD:</span> Deployment automation, best practices<br><br>
 
-<span class="success">🎨 Habilidades Complementarias:</span><br>
-   <span class="warning">▸</span> Filosofía y Estética Digital<br>
-   <span class="warning">▸</span> Escritura Técnica y Documentación<br>
-   <span class="warning">▸</span> Gestión de Equipos y Mentoring<br>
-   <span class="warning">▸</span> UX/UI Design Principles`,
+<span class="success">📊 Data & Analytics:</span><br>
+   <span class="info">Processing:</span> Pandas, PySpark, ETL pipelines<br>
+   <span class="info">Visualization:</span> Grafana, Tableau, PowerBI<br>
+   <span class="info">GIS:</span> Leaflet (mapas interactivos)<br>
+   <span class="info">Office:</span> Excel (nivel avanzado)<br><br>
+
+<span class="success">🎯 Especialidades:</span><br>
+   <span class="warning">▸</span> End-to-end ML pipelines desde cero<br>
+   <span class="warning">▸</span> Liderazgo técnico y gestión de equipos<br>
+   <span class="warning">▸</span> Automatización de procesos de datos<br>
+   <span class="warning">▸</span> Soluciones customer-centric con AI`,
 
             projects: `<div class="section-header">🚀 PROYECTOS DESTACADOS</div>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
 
-<span class="success">🌐 Estética Online</span> <span class="info">(2024 - Presente)</span><br>
-   <span class="warning">Descripción:</span> Blog personal sobre filosofía, estética y tecnología<br>
-   <span class="warning">Stack:</span> Python Flask, Tufte CSS, Markdown, Jinja2<br>
-   <span class="warning">Features:</span> Sistema de posts dinámico, modo oscuro, terminal CV<br>
-   <span class="warning">URL:</span> <span class="info">esteticaonline.com</span><br><br>
+<span class="success">⚡ Extracción de Datos - Energías Renovables</span><br>
+<span class="info">ScottishPower/Iberdrola @ Minsait</span><br>
+   <span class="warning">Tecnologías:</span> LLMs, OCR, Docker, Kubernetes<br>
+   <span class="warning">Impacto:</span> Automatización completa de extracción documental<br>
+   <span class="warning">Rol:</span> Machine Learning Lead<br><br>
 
-<span class="success">🔧 Enterprise API Gateway</span> <span class="info">(2023)</span><br>
-   <span class="warning">Descripción:</span> Sistema de gestión de APIs empresariales<br>
-   <span class="warning">Stack:</span> Python FastAPI, PostgreSQL, Redis, Docker<br>
-   <span class="warning">Features:</span> JWT Auth, Rate Limiting, Real-time Analytics<br>
-   <span class="warning">Impacto:</span> +40% eficiencia en gestión de microservicios<br><br>
+<span class="success">💰 Cross-selling con IA</span><br>
+<span class="info">MAPFRE @ Minsait</span><br>
+   <span class="warning">Tecnologías:</span> SOTA ML models, monitoring systems<br>
+   <span class="warning">Impacto:</span> Predicciones y clasificaciones para seguros<br>
+   <span class="warning">Rol:</span> ML Lead + sistema de benchmarking<br><br>
 
-<span class="success">📊 Real-time Analytics Dashboard</span> <span class="info">(2022)</span><br>
-   <span class="warning">Descripción:</span> Dashboard para análisis de datos en tiempo real<br>
-   <span class="warning">Stack:</span> React, D3.js, WebSockets, Python Backend<br>
-   <span class="warning">Features:</span> Visualizaciones interactivas, Export PDF/Excel<br>
-   <span class="warning">Usuarios:</span> +1000 usuarios activos diarios<br><br>
+<span class="success">⚡ Predicción de Consumo Energético</span><br>
+<span class="info">ENDESA/ENEL @ Minsait</span><br>
+   <span class="warning">Tecnologías:</span> Python, ML pipelines, CI/CD<br>
+   <span class="warning">Impacto:</span> 2 proyectos + refactoring de 3 existentes<br>
+   <span class="warning">Rol:</span> Lead Developer + Team Manager<br><br>
 
-<span class="success">🤖 DevOps Automation Suite</span> <span class="info">(2021)</span><br>
-   <span class="warning">Descripción:</span> Suite de automatización para despliegues<br>
-   <span class="warning">Stack:</span> Python, Bash, Docker, Kubernetes, Terraform<br>
-   <span class="warning">Features:</span> CI/CD pipelines, Infrastructure as Code<br>
-   <span class="warning">Resultado:</span> -70% tiempo de despliegue, +99.9% uptime<br><br>
+<span class="success">📄 Reducción 5x en Procesamiento Documental</span><br>
+<span class="info">DRAGADOS @ Minsait</span><br>
+   <span class="warning">Tecnologías:</span> Computer Vision, OCR, ETL automation<br>
+   <span class="warning">Impacto:</span> Reducción 80% tiempo procesamiento<br>
+   <span class="warning">Metodología:</span> Agile, MVP mindset<br><br>
 
-<span class="success">🎨 Portfolio & Blog Engine</span> <span class="info">(2020)</span><br>
-   <span class="warning">Descripción:</span> CMS personalizado para portfolios creativos<br>
-   <span class="warning">Stack:</span> Django, Vue.js, PostgreSQL, AWS S3<br>
-   <span class="warning">Features:</span> Editor WYSIWYG, Multi-tenancy, CDN integration<br>
-   <span class="warning">Clientes:</span> +50 portfolios activos`,
+<span class="success">🌡️ Dashboards Interactivos Climatización</span><br>
+<span class="info">Sanz Clima</span><br>
+   <span class="warning">Tecnologías:</span> AWS (S3, Athena, SageMaker), Flask, Leaflet<br>
+   <span class="warning">Impacto:</span> Producto clave para departamento de ventas<br>
+   <span class="warning">Características:</span> Consumer-centric GUI, mapas interactivos<br><br>
+
+<span class="success">📈 Automatización +60% Visualizaciones</span><br>
+<span class="info">Ayscom (Telecomunicaciones)</span><br>
+   <span class="warning">Tecnologías:</span> Python, NLP, CassandraDB, Grafana<br>
+   <span class="warning">Impacto:</span> 80% reducción tiempo extracción (minutos → segundos)<br>
+   <span class="warning">Innovación:</span> Proceso manual → completamente automatizado`,
 
             contact: `<div class="section-header">📬 INFORMACIÓN DE CONTACTO</div>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
 
 <div class="ascii-art">
-   ╭─ Contacto Profesional ────────────────────────╮<br>
+   ╭─ José Manuel González Rodríguez ──────────────╮<br>
    │                                               │<br>
+   │  👤 Data & Machine Learning Engineer          │<br>
    │  📧 Email:    jose@esteticaonline.com         │<br>
    │  🔗 LinkedIn: linkedin.com/in/jmgonzalezro    │<br>
    │  🐙 GitHub:   github.com/jmgonzalezro         │<br>
    │  🌐 Website:  esteticaonline.com              │<br>
-   │  📱 Teléfono: +34 XXX XXX XXX                 │<br>
+   │  📍 Madrid, España                            │<br>
    │                                               │<br>
    ╰───────────────────────────────────────────────╯<br>
 </div><br>
 
-<span class="success">💬 Disponible para:</span><br>
-   <span class="warning">▸</span> Proyectos de desarrollo web full-stack<br>
-   <span class="warning">▸</span> Consultoría técnica y arquitectura de software<br>
-   <span class="warning">▸</span> Colaboraciones en investigación (filosofía + tech)<br>
-   <span class="warning">▸</span> Charlas técnicas y workshops<br>
-   <span class="warning">▸</span> Mentoring y formación de equipos<br><br>
+<span class="success">🎯 Especialización Principal:</span><br>
+   <span class="warning">▸</span> <span class="info">7+ años</span> en Machine Learning y Data Science<br>
+   <span class="warning">▸</span> Liderazgo técnico en proyectos enterprise<br>
+   <span class="warning">▸</span> Sectores: IT, Energía, Seguros, Telecomunicaciones, Salud<br>
+   <span class="warning">▸</span> End-to-end ML pipelines y automatización<br><br>
 
-<span class="success">🕒 Horario preferido:</span> <span class="info">Lun-Vie 9:00-18:00 CET</span><br>
-<span class="success">💰 Tarifa:</span> <span class="info">Consultar según proyecto</span><br>
-<span class="success">🌍 Modalidad:</span> <span class="info">Remoto / Híbrido / Presencial (España)</span><br><br>
+<span class="success">💼 Disponible para:</span><br>
+   <span class="warning">▸</span> Proyectos de Machine Learning y Data Science<br>
+   <span class="warning">▸</span> Liderazgo técnico y consultoría en IA<br>
+   <span class="warning">▸</span> Desarrollo de pipelines ML desde cero<br>
+   <span class="warning">▸</span> Computer Vision, NLP y procesamiento de datos<br>
+   <span class="warning">▸</span> Arquitecturas cloud (AWS, Azure) y containerización<br>
+   <span class="warning">▸</span> Gestión de equipos técnicos multidisciplinares<br><br>
 
-<span class="info">💡 Tip: También escribo sobre la intersección entre tecnología y humanidades</span>`,
+<span class="success">🏆 Logros Destacados:</span><br>
+   <span class="warning">▸</span> <span class="info">Reducción 5x</span> en tiempo de procesamiento documental<br>
+   <span class="warning">▸</span> <span class="info">+60%</span> incremento en visualizaciones de datos<br>
+   <span class="warning">▸</span> <span class="info">80%</span> reducción en tiempo de extracción de datos<br>
+   <span class="warning">▸</span> Liderazgo en equipos que <span class="info">multiplicaron</span> su tamaño<br><br>
+
+<span class="success">🎓 Formación:</span> <span class="info">PhD + Master en UCM | Psychology + ML</span><br>
+<span class="success">💡 Mindset:</span> <span class="info">Entrepreneurial | Customer-centric | MVP</span>`,
 
             help: `<div class="section-header">📖 COMANDOS DISPONIBLES</div>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
