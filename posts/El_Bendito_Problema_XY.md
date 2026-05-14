@@ -1,6 +1,6 @@
 ---
 title: El Bendito Problema XY
-date: 2026-02-05
+date: 2026-05-14
 ---
 ## No sabemos qué respuesta queremos para nuestras preguntas
 
