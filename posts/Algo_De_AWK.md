@@ -33,7 +33,7 @@ AWK parsea la línea de manera automática, utlizando cualquier espacio en blanc
 
 
 ```
-echo 'esto es una prueba' | awk '{print $3}' // prints 'a'
+echo 'esto es una prueba' | awk '{print $3}' // prints 'una'
 awk '{print $1}' logs.txt
 ```
 
@@ -44,7 +44,7 @@ awk '{print $1}' logs.txt
 Por ahora sencillo, no? Y útil (creo). Cuando necesito imprimir al final del string, la variable especial NF contiene el número de campos en la línea actual. Puedo imprimir el último campo printeando el campo $NF o puedo manipular el valor para identificar el campo basándome en su última posición. O, si quiero, puedo imprimir varias cosas a la vez con el mismo comando ```print```.
 
 ```
-echo 'esto es una prueba' | awk '{print $ NF}' // prints "test"
+echo 'esto es una prueba' | awk '{print $ NF}' // prints "prueba"
 awk '{print $1, $(NF -2) }' logs.txt
 ```
 
