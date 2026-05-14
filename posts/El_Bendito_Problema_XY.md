@@ -12,7 +12,7 @@ Para saber cuál es el problema, primero tendremos que saber qué es una pregunt
 
 De la RAE: 
 
-	Pregunta: f. Interrogación que se hace para que alguien responda lo que sabe de un negocio u otra cosa.
+**Pregunta**: f. Interrogación que se hace para que alguien responda lo que sabe de un negocio u otra cosa.
 
 Cuando hacemos una pregunta, queremos la respuesta de otra persona que sabe del tema. Queremos adquirir el conocimiento que tiene esta persona. El problema de la pregunta en sí, a nivel antropológico, es que suponemos que el que la formula sabe lo que quiere saber. Es decir, una persona pregunta "¿Qué temperatura hace?" porque quiere saber si hace frío o calor.
 
