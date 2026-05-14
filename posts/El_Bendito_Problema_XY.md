@@ -12,7 +12,7 @@ Para saber cuál es el problema, primero tendremos que saber qué es una pregunt
 
 De la RAE: 
 
-**Pregunta**: f. Interrogación que se hace para que alguien responda lo que sabe de un negocio u otra cosa.
+### **Pregunta**: f. Interrogación que se hace para que alguien responda lo que sabe de un negocio u otra cosa.
 
 Cuando hacemos una pregunta, queremos la respuesta de otra persona que sabe del tema. Queremos adquirir el conocimiento que tiene esta persona. El problema de la pregunta en sí, a nivel antropológico, es que suponemos que el que la formula sabe lo que quiere saber. Es decir, una persona pregunta "¿Qué temperatura hace?" porque quiere saber si hace frío o calor.
 
@@ -34,7 +34,7 @@ Creo que a todas las personas del mundo, al llegar a los 15 años, deberían obl
 
 https://i.imgflip.com/apf6ln.jpg
 
-### La comunicación y el fracaso del lenguaje
+## La comunicación y el fracaso del lenguaje
 
 No es trivial decir que todo el mundo cometemos errores haciendo preguntas XY. El significado psicológico es bastante profundo y podríamos llegar a analizar la problemática que está debajo de este estilo de preguntas. En ocasiones, incluso, se puede apreciar cierta pasivo agresividad de las personas que formulan este tipo de preguntas, y su predisposición a no querer aceptar las respuestas emitidas. Como una especie de táctica preventiva para que no me respondan lo que yo no quiero... o algo así. Lo que creo que más me ha funcionado, al menos en el mundo empresarial, es volver hacia atrás y preguntar diréctamente sobre qué quieren realizar, y a partir de ahí ir subiendo la complejidad. No sé si para todo el mundo es una solución, pero al menos evitaríamos muchos mal entendidos.
 
