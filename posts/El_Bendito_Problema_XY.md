@@ -32,7 +32,7 @@ Una de las cosas que más me gustan en las webs no comerciales es lo directas qu
 
 Creo que a todas las personas del mundo, al llegar a los 15 años, deberían obligarles a leerse la página de xyproblem para poder seguir avanzando en su vida. Así, sin tapujos. Quizá así podríamos avanzar como sociedad a un mundo mejor y crear menos deuda técnica en cualquier campo, desde cocinar en casa hasta trabajar en proyectos de lo más abstracto.
 
-https://i.imgflip.com/apf6ln.jpg
+![Future if poeple...](https://i.imgflip.com/apf6ln.jpg)
 
 ## La comunicación y el fracaso del lenguaje
 
