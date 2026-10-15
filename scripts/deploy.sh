@@ -64,10 +64,12 @@ throttle() {
         _window_start=$now
         _count=0
     fi
-    (( _count++ ))
+    _count=$((_count + 1))
     if (( _count >= 35 )); then
         local wait=$(( _window_start + 60 - now ))
-        (( wait > 0 )) && sleep "$wait"
+        if (( wait > 0 )); then
+            sleep "$wait"
+        fi
         _window_start=$(date +%s)
         _count=0
     fi
