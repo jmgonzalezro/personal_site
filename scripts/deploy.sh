@@ -115,13 +115,24 @@ discover_webapp() {
     echo "Web app: ${PA_DOMAIN}" >&2
 
     if [[ -z "$PA_DIR" ]]; then
-        # El archivo WSGI apunta al directorio real del proyecto
-        code=$(pa_request GET "${API}/files/path/var/www/${PA_DOMAIN}_wsgi.py")
+        # Fuente fiable: working_directory que devuelve la propia API de webapps.
+        PA_DIR=$(grep -o '"working_directory": *"[^"]*"' "$BODY_FILE" | head -1 | sed 's/.*: *"//; s/"//')
+        PA_DIR="${PA_DIR%/}"
+    fi
+    [[ -n "$PA_DIR" ]] || die "No pude determinar el directorio del proyecto (working_directory vacío). Fíjalo a mano en PA_DIR."
+    echo "Directorio del proyecto: ${PA_DIR}" >&2
+
+    # WSGI real: el dominio con puntos se convierte en guiones bajos
+    # (www.jmgonzalezro.com -> www_jmgonzalezro_com_wsgi.py)
+    if [[ -z "${PA_WSGI:-}" ]]; then
+        local wsgi_name="${PA_DOMAIN//./_}_wsgi.py"
+        code=$(pa_request GET "${API}/files/path/var/www/${wsgi_name}")
         if [[ "$code" == "200" ]]; then
-            PA_DIR=$(grep -o "/home/${PA_USERNAME}/[^'\"]*" "$BODY_FILE" | head -1)
+            PA_WSGI="/var/www/${wsgi_name}"
+            echo "Archivo WSGI: ${PA_WSGI}" >&2
+        else
+            echo "Aviso: no encontré /var/www/${wsgi_name}; si toca recargar, hazlo desde la pestaña Web." >&2
         fi
-        PA_DIR="${PA_DIR:-/home/${PA_USERNAME}/personal_site}"
-        echo "Directorio del proyecto: ${PA_DIR}" >&2
     fi
 }
 
@@ -131,6 +142,7 @@ if [[ -z "$PA_DOMAIN" || -z "$PA_DIR" || "$MODE" == "check" ]]; then
         echo "OK. Añade esto a tu .env para evitar el descubrimiento:"
         echo "PA_DOMAIN=${PA_DOMAIN}"
         echo "PA_DIR=${PA_DIR}"
+        [[ -n "${PA_WSGI:-}" ]] && echo "PA_WSGI=${PA_WSGI}"
         exit 0
     fi
 fi
