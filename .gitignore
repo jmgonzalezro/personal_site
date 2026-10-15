@@ -4,3 +4,7 @@ venv/
 
 # files
 *.pyc
+
+# deploy local
+.env
+.deploy_last_sha

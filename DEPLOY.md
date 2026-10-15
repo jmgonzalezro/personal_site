@@ -1,71 +1,57 @@
 # Despliegue en PythonAnywhere
 
-Fuente única de verdad: **Git (GitHub)**. El flujo es:
+Todo se escribe y se despliega **desde local**. Git (GitHub) es la fuente de
+verdad para control de versiones; PythonAnywhere recibe los archivos por su
+API oficial y se recarga sola. No hace falta abrir la consola del navegador
+ni SSH.
 
 ```
-local: commit + push  →  PythonAnywhere: git pull + recarga
+local: escribir → commit + push a GitHub → subir cambios por API → web app recargada
 ```
 
 ## Configuración inicial (solo una vez)
 
-En la consola **Bash del navegador** de PythonAnywhere, dentro del directorio
-de tu web app (la ruta exacta está en el archivo WSGI que apunta a `app.py`):
+1. Genera un token: <https://www.pythonanywhere.com/account/#api_token>
+   (en `eu.pythonanywhere.com` si tu cuenta es europea).
 
-```bash
-cd ~/personal_site          # ← ajusta a tu ruta real
-cp -r ~/personal_site ~/personal_site_backup   # seguridad antes de tocar nada
-git init
-git remote add origin https://github.com/jmgonzalezro/personal_site.git
-git fetch origin
-git checkout -B main origin/main
-```
+2. Crea tu `.env` (está en `.gitignore`, nunca se sube):
 
-Esto pisa el código del servidor con el de GitHub (bien, viene de rsync local)
-y deja `venv/`, `__pycache__/` y demás archivos no versionados intactos.
-El repo es público, así que no hace falta token para hacer pull.
+   ```bash
+   cp .env.example .env
+   # edita .env: PA_USERNAME y PA_TOKEN
+   ```
+
+3. Comprueba la conexión y descubre dominio/directorio:
+
+   ```bash
+   ./scripts/deploy.sh --check
+   ```
+
+   Imprime `PA_DOMAIN=` y `PA_DIR=` para pegarlos en `.env` (opcional, pero
+   así no se descubre en cada deploy).
 
 ## Flujo diario (bloguear)
 
-1. Crear el post:
-
-   ```bash
-   ./scripts/nuevo_post.sh "Título del post"
-   nvim posts/Título_del_post.md
-   ```
-
-2. Desplegar desde local:
-
-   ```bash
-   ./scripts/deploy.sh "Mensaje del commit"
-   ```
-
-   Hace commit (si hay cambios), push a GitHub y te imprime el comando final.
-
-3. En la consola Bash del navegador de PythonAnywhere:
-
-   ```bash
-   cd ~/personal_site && ./scripts/deploy_server.sh
-   ```
-
-   Baja el último commit y recarga la web app (toca el archivo WSGI).
-   Recarga la pestaña del navegador y listo.
-
-## Si algún día tienes cuenta de pago (SSH)
-
-Con `ssh-copy-id usuario@ssh.pythonanywhere.com` puedes ejecutar el paso 3
-directamente desde local:
+Todo desde local, un solo comando:
 
 ```bash
-ssh usuario@ssh.pythonanywhere.com 'cd ~/personal_site && ./scripts/deploy_server.sh'
+./scripts/nuevo_post.sh "Título del post"   # crea posts/Titulo.md con frontmatter
+nvim posts/Titulo_del_post.md               # escribir
+./scripts/deploy.sh "Mensaje del commit"    # commit + push + subir + recargar
 ```
 
-## Nota sobre rsync
+`deploy.sh` solo sube los archivos cambiados desde el último deploy (guarda el
+SHA en `.deploy_last_sha`). Flags útiles:
 
-Se puede seguir usando, pero si lo haces, hazlo **después** del commit+push y
-con estos flags para no dejar basura ni páginas fantasma:
+- `--full` — sube todos los archivos (ignora el SHA anterior). Útil tras un
+  `git clone` nuevo o si sospechas de desfase.
+- `--check` — valida token/usuario y muestra dominio y directorio sin desplegar.
 
-```bash
-rsync -avz --delete \
-  --exclude '.git/' --exclude 'venv/' --exclude '__pycache__/' \
-  ./ usuario@ssh.pythonanywhere.com:~/personal_site/
-```
+## Notas
+
+- La API de PythonAnywhere tiene límite de 40 peticiones/minuto; el script
+  hace throttle y reintentos automáticos.
+- Los borrados locales se replican en el servidor (los posts que borres
+  desaparecen de la web).
+- Si algún día tienes cuenta de pago, el flujo alternativo sería SSH +
+  `git pull` directo; con este script no hace falta.
