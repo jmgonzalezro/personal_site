@@ -15,10 +15,47 @@ app = Flask(__name__)
 
 
 POSTS_DIR = "posts"
+POSTS_EN_DIR = os.path.join(POSTS_DIR, "en")
+DEFAULT_LANG = "es"
+
+# Cadenas de la interfaz. El CV (terminal.html) queda fuera: solo en español.
+TRANSLATIONS = {
+    "es": {
+        "toggle_theme": "Alternar modo noche",
+        "toggle_lang": "Switch to English",
+        "lang_code": "en",
+        "lang_label": "EN",
+        "tagline": "Estética, dialéctica, software y algoritmos.",
+        "timeline": "Timeline",
+        "site_name": "Estética @ online",
+        "back_home": "Volver al inicio",
+        "post_not_found": "Post not found",
+        "post_forbidden": "Post no permitido.",
+    },
+    "en": {
+        "toggle_theme": "Toggle dark mode",
+        "toggle_lang": "Cambiar a español",
+        "lang_code": "es",
+        "lang_label": "ES",
+        "tagline": "Aesthetics, dialectics, software and algorithms.",
+        "timeline": "Timeline",
+        "site_name": "Estética @ online",
+        "back_home": "Back to home",
+        "post_not_found": "Post not found",
+        "post_forbidden": "Post not allowed.",
+    },
+}
+
+
+def get_lang():
+    """Idioma actual: cookie 'lang' puesta por el botón."""
+    lang = request.cookies.get("lang", DEFAULT_LANG)
+    return lang if lang in TRANSLATIONS else DEFAULT_LANG
 
 
 @app.route("/")
 def index():
+    lang = get_lang()
     posts = []
     for post in os.listdir(POSTS_DIR):
         if post.endswith(".md"):
@@ -30,7 +67,18 @@ def index():
                     pass
                 elif post_date:
                     post_date = datetime.fromtimestamp(os.path.getctime(post_path))
-            posts.append((post, post_date))
+
+            # Título por defecto: el nombre del archivo (como hasta ahora).
+            # Si hay versión en inglés, usamos su título del frontmatter.
+            title = post[:-3].replace("_", " ")
+            if lang == "en":
+                en_path = os.path.join(POSTS_EN_DIR, post)
+                if os.path.exists(en_path):
+                    with open(en_path, "r") as f:
+                        en_post = frontmatter.load(f)
+                    title = en_post.get("title", title)
+
+            posts.append((post, post_date, title))
 
     sorted_posts = sorted(posts, key=lambda x: x[1], reverse=True)
 
@@ -43,7 +91,7 @@ def index():
     processed_posts = [
         {
             "url": post[0][:-3],
-            "title": post[0][:-3].replace("_", " "),
+            "title": post[2],
             "date": post[1],
         }
         for post in paginated_posts
@@ -52,9 +100,15 @@ def index():
 
     response = make_response(
         render_template(
-            "index.html", posts=processed_posts, page=page, total_pages=total_pages
+            "index.html",
+            posts=processed_posts,
+            page=page,
+            total_pages=total_pages,
+            t=TRANSLATIONS[lang],
+            lang=lang,
         )
     )
+    response.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, samesite="Lax")
     return set_no_cache_headers(response)
 
 
@@ -70,11 +124,19 @@ def post(post_name):
     if ".." in post_name or not os.path.abspath(
         f"{POSTS_DIR}/{post_name}.md"
     ).startswith(os.path.abspath(POSTS_DIR)):
-        return "Post no permitido.", 403
+        return TRANSLATIONS[get_lang()]["post_forbidden"], 403
 
+    lang = get_lang()
+
+    # Preferimos la versión en inglés si existe; si no, la española.
     post_path = f"{POSTS_DIR}/{post_name}.md"
+    if lang == "en":
+        en_path = f"{POSTS_EN_DIR}/{post_name}.md"
+        if os.path.exists(en_path):
+            post_path = en_path
+
     if not os.path.exists(post_path):
-        return "Post not found", 404
+        return TRANSLATIONS[lang]["post_not_found"], 404
 
     with open(post_path, "r") as f:
         parsed_post = frontmatter.load(f)
@@ -102,9 +164,17 @@ def post(post_name):
     )
     response = make_response(
         render_template(
-            "post.html", content=html_content, title=title, date=date, subtitle=subtitle
+            "post.html",
+            content=html_content,
+            title=title,
+            date=date,
+            subtitle=subtitle,
+            t=TRANSLATIONS[lang],
+            lang=lang,
         )
     )
+    # Persistimos la elección de idioma para el resto de la sesión.
+    response.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, samesite="Lax")
     return set_no_cache_headers(response)
 
 

@@ -47,6 +47,27 @@ SHA en `.deploy_last_sha`). Flags útiles:
   `git clone` nuevo o si sospechas de desfase.
 - `--check` — valida token/usuario y muestra dominio y directorio sin desplegar.
 
+## Idioma (ES / EN)
+
+Hay un botón **EN/ES** junto al del tema, arriba a la derecha. Cambia la
+interfaz (índice y páginas de post) y guarda la elección en una cookie `lang`.
+
+- **Interfaz**: traducida en ambos idiomas (índice + post). El CV del terminal
+  queda **solo en español**, a propósito.
+- **Posts**: se escriben en español en `posts/`. Para publicar la versión en
+  inglés, crea el mismo nombre en `posts/en/`:
+
+  ```bash
+  mkdir -p posts/en
+  cp posts/Mi_Post.md posts/en/Mi_Post.md
+  ```
+
+  Si existe `posts/en/<nombre>.md`, se sirve esa versión cuando el lector está
+  en inglés. Si **no existe, se queda en español** sin romper nada. El título
+  del índice en inglés toma el `title:` del frontmatter del fichero en inglés.
+
+  Traducir posts es opcional y se puede hacer a tu ritmo.
+
 ## Notas
 
 - La API de PythonAnywhere tiene límite de 40 peticiones/minuto; el script

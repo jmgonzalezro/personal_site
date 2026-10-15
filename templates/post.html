@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,15 +13,21 @@
 
 <body>
     <!-- Dark Mode Toggle -->
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar modo noche">
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="{{ t.toggle_theme }}">
         <span class="fa-stack fa-lg">
             <i class="fa fa-square-o fa-stack-2x"></i>
             <i id="mode-icon" class="fa fa-moon-o fa-stack-1x"></i>
         </span>
     </button>
+
+    <!-- Language Toggle -->
+    <button class="lang-toggle" onclick="toggleLang()" title="{{ t.toggle_lang }}">
+        {{ t.lang_label }}
+    </button>
+
     <header class="post-header">
         <nav>
-            <a href="{{ url_for('index') }}">Estética @ online</a> / <span>{{ title }}</span>
+            <a href="{{ url_for('index') }}">{{ t.site_name }}</a> / <span>{{ title }}</span>
         </nav>
         <hr>
     </header>
@@ -39,10 +45,17 @@
 
     <footer>
         <hr>
-        <a href="{{ url_for('index') }}">Volver al inicio</a>
+        <a href="{{ url_for('index') }}">{{ t.back_home }}</a>
     </footer>
     
     <script>
+        // Language Toggle: cambia la cookie y recarga para que Flask sirva el nuevo idioma
+        function toggleLang() {
+            var next = "{{ t.lang_code }}";
+            document.cookie = "lang=" + next + "; path=/; max-age=" + (60 * 60 * 24 * 365) + "; samesite=lax";
+            window.location.reload();
+        }
+
         // Dark Mode Toggle Functionality
         function toggleDarkMode() {
             const body = document.body;

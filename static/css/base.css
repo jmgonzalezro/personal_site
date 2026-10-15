@@ -319,6 +319,33 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     transform: scale(0.95);
 }
 
+/* Language Toggle */
+.lang-toggle {
+    position: fixed;
+    top: 20px;
+    right: 65px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
+    font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    font-size: 1.05em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: var(--text-color-main);
+    transition: color 0.3s ease, transform 0.15s ease;
+}
+
+.lang-toggle:hover {
+    color: green;
+}
+
+.lang-toggle:active {
+    transform: scale(0.95);
+}
+
 /* Social icons spacing fix */
 .social a {
     text-decoration: none; 

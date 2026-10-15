@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ lang }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +11,18 @@
 
     <body>
         <!-- Dark Mode Toggle -->
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar modo noche">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="{{ t.toggle_theme }}">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-square-o fa-stack-2x"></i>
                 <i id="mode-icon" class="fa fa-moon-o fa-stack-1x"></i>
             </span>
         </button>
+
+        <!-- Language Toggle -->
+        <button class="lang-toggle" onclick="toggleLang()" title="{{ t.toggle_lang }}">
+            {{ t.lang_label }}
+        </button>
+
         <h1>Estética @ online / José M. González</h1>
             <section>
                 <span class="marginnote">
@@ -34,8 +40,8 @@
                     </a>
                 </span>
 
-                <h2>Estética, dialéctica, software y algoritmos.</h2>
-                <h2>Timeline</h2>
+                <h2>{{ t.tagline }}</h2>
+                <h2>{{ t.timeline }}</h2>
                 <ul> 
                     {% for post in posts %} 
                     <li><a href="/posts/{{ post.url }}">{{ post.title }}</a></li>
@@ -45,6 +51,13 @@
         </article>
         
         <script>
+            // Language Toggle: cambia la cookie y recarga para que Flask sirva el nuevo idioma
+            function toggleLang() {
+                var next = "{{ t.lang_code }}";
+                document.cookie = "lang=" + next + "; path=/; max-age=" + (60 * 60 * 24 * 365) + "; samesite=lax";
+                window.location.reload();
+            }
+
             // Dark Mode Toggle Functionality
             function toggleDarkMode() {
                 const body = document.body;
