@@ -156,7 +156,7 @@ if [[ "$MODE" == "full" || -z "$last" ]] || ! git cat-file -e "$last" 2>/dev/nul
     echo "Sincronización completa (no hay SHA anterior registrado)."
     while IFS= read -r f; do
         uploads+=("$f")
-    done < <(git ls-files)
+    done < <(git -c core.quotePath=false ls-files)
 else
     while IFS=$'\t' read -r status old new; do
         case "$status" in
@@ -164,7 +164,7 @@ else
             D)        deletes+=("$old") ;;
             R*)       deletes+=("$old"); uploads+=("$new") ;;
         esac
-    done < <(git diff --name-status "$last" HEAD)
+    done < <(git -c core.quotePath=false diff --name-status "$last" HEAD)
 fi
 
 if [[ ${#uploads[@]} -eq 0 && ${#deletes[@]} -eq 0 ]]; then
