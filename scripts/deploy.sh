@@ -37,6 +37,21 @@ done
 
 die() { echo "ERROR: $*" >&2; exit 1; }
 
+# urlencode PATH -> percent-encoding byte a byte, preservando / y los
+# caracteres seguros. Necesario para rutas con acentos (UTF-8).
+urlencode() {
+    local LC_ALL=C
+    local string="$1" encoded="" pos c
+    for (( pos = 0; pos < ${#string}; pos++ )); do
+        c="${string:$pos:1}"
+        case "$c" in
+            [-._/~a-zA-Z0-9]) encoded+="$c" ;;
+            *) printf -v c '%%%02X' "'$c"; encoded+="$c" ;;
+        esac
+    done
+    printf '%s' "$encoded"
+}
+
 [[ -n "$PA_USERNAME" ]] || die "Falta PA_USERNAME en .env (tu usuario de PythonAnywhere)."
 [[ -n "$PA_TOKEN" ]]    || die "Falta PA_TOKEN en .env (pega el token de tu página de Account → API Token)."
 
@@ -163,7 +178,7 @@ status_ok=1
 for f in "${deletes[@]:-}"; do
     [[ -n "$f" ]] || continue
     throttle
-    code=$(pa_request_retry DELETE "${API}/files/path${PA_DIR}/${f}")
+    code=$(pa_request_retry DELETE "${API}/files/path$(urlencode "${PA_DIR}/${f}")")
     if [[ "$code" == "204" || "$code" == "404" ]]; then
         echo "  borrado: $f"
     else
@@ -174,11 +189,8 @@ done
 
 for f in "${uploads[@]:-}"; do
     [[ -n "$f" ]] || continue
-    case "$f" in
-        *" "*) echo "  FALLO: ruta con espacios no soportada por la API: $f" >&2; status_ok=0; continue ;;
-    esac
     throttle
-    code=$(pa_request_retry POST "${API}/files/path${PA_DIR}/${f}" -F "content=@${f}")
+    code=$(pa_request_retry POST "${API}/files/path$(urlencode "${PA_DIR}/${f}")" -F "content=@${f}")
     if [[ "$code" == "200" || "$code" == "201" ]]; then
         echo "  subido: $f"
     else
