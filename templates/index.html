@@ -20,7 +20,10 @@
 
         <!-- Language Toggle -->
         <button class="lang-toggle" onclick="toggleLang()" title="{{ t.toggle_lang }}">
-            {{ t.lang_label }}
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <span class="lang-inner fa-stack-1x">{{ t.lang_label }}</span>
+            </span>
         </button>
 
         <h1>Estética @ online / José M. González</h1>

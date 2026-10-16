@@ -300,6 +300,10 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     z-index: 1000;
     padding: 0;
     margin: 0;
+    /* Sin esto <button> se queda con el font-size por defecto (13.33px) y
+       .fa-stack, que escala en em, se queda mas pequeno que los iconos
+       sociales (que si heredan el del body). */
+    font-size: 1em;
 }
 
 .dark-mode-toggle .fa-stack {
@@ -319,23 +323,57 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     transform: scale(0.95);
 }
 
-/* Language Toggle */
+/* Los dos iconos superiores van dentro de una pila de Font Awesome. FA los
+   posiciona con position:absolute sin top, asi que la posicion vertical la
+   decide la linea heredada y la luna quedaba descolocada. Centramos ambos
+   llena la pila por completo. */
+.dark-mode-toggle .fa-stack,
+.lang-toggle .fa-stack {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dark-mode-toggle .fa-stack > *,
+.lang-toggle .fa-stack > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* Language Toggle: misma estructura que el resto de iconos
+   (marco fa-square-o + contenido centrado dentro de la pila) */
 .lang-toggle {
     position: fixed;
     top: 20px;
-    right: 65px;
+    right: 75px;
     background: none;
     border: none;
     cursor: pointer;
     z-index: 1000;
     padding: 0;
     margin: 0;
+    /* igual que .dark-mode-toggle: los <button> no heredan el font-size */
+    font-size: 1em;
     font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-    font-size: 1.05em;
-    font-weight: bold;
-    letter-spacing: 1px;
     color: var(--text-color-main);
     transition: color 0.3s ease, transform 0.15s ease;
+}
+
+.lang-toggle .lang-inner {
+    /* el texto EN/ES dentro del marco. 0.68em le da una huella de 19px de
+       ancho, exactamente la misma que la luna del icono de tema, con los
+       mismos claros respecto al marco (1px izquierda, 2px derecha) */
+    font-size: 0.68em;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    font-style: normal;
 }
 
 .lang-toggle:hover {
