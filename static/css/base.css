@@ -300,10 +300,11 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     z-index: 1000;
     padding: 0;
     margin: 0;
-    /* Sin esto <button> se queda con el font-size por defecto (13.33px) y
-       .fa-stack, que escala en em, se queda mas pequeno que los iconos
-       sociales (que si heredan el del body). */
-    font-size: 1em;
+    /* 1rem = 15px (font-size de <html>). Los .fa-stack escalan en em
+       heredado: sin un valor fijo, el font-size del body en móvil
+       (calc(1.5rem + 2vw) ≈ 30px) hacía los botones el doble de grandes
+       y se metían sobre el texto. rem los desacopla del body. */
+    font-size: 1rem;
 }
 
 .dark-mode-toggle .fa-stack {
@@ -359,8 +360,8 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     z-index: 1000;
     padding: 0;
     margin: 0;
-    /* igual que .dark-mode-toggle: los <button> no heredan el font-size */
-    font-size: 1em;
+    /* igual que .dark-mode-toggle: 1rem fijo, inmune al font-size del body */
+    font-size: 1rem;
     font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
     color: var(--text-color-main);
     transition: color 0.3s ease, transform 0.15s ease;
@@ -401,10 +402,18 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     /* Eliminar margin-left para que mantenga el espaciado natural */
 }
 
-@media (max-width: 600px) {
+/* Mismo breakpoint (760px) que el @media de tufte.min.css: con 600px la
+   zona 601–760px (móvil apaisado/tablets pequeñas) se quedaba sin adaptar. */
+@media screen and (max-width: 760px) {
     .dark-mode-toggle {
         top: 15px;
         right: 15px;
+    }
+    /* el stack mide 2.5em × 1.333em ≈ 50px de ancho; con right:15px el de
+       tema ocupa 15–65px, así que el de idioma va justo a su izquierda */
+    .lang-toggle {
+        top: 15px;
+        right: 70px;
     }
 }
 
@@ -695,38 +704,104 @@ p.flash {
     text-shadow: none;
 }
 
-@media (max-width: 600px) {
+@media screen and (max-width: 760px) {
+    body {
+        width: 84%; /* Ancho adaptado */
+        /* 9.5rem de escritorio deja un hueco enorme en móvil. Ojo: .post-header
+           compensa con margin-top negativo, ver abajo. */
+        margin-top: 6.5rem;
+        margin-left: 8%;
+        margin-right: 8%;
+        /* Sin font-size aquí: el anterior calc(1.5rem + 2vw) daba ≈30px y
+           inflaba todo lo que escala en em heredado (iconos fa-stack). */
+    }
+
     article {
         padding: 1rem;
+        margin-right: 0; /* el margin-right: 45% de escritorio provoca scroll horizontal */
         margin-bottom: 2rem; /* Más espacio entre artículos */
     }
 
-    h1, h2, h3 {
-        margin: 2rem 0 1rem; /* Ajusta espaciado para títulos */
+    /* Compensa el margin-top del body reducido (9.5rem → 6.5rem) para que la
+       cabecera del post no quede pegada arriba ni bajo los botones fijos */
+    .post-header {
+        margin-top: -1.5rem;
     }
-    .marginnote, .sidenote {
-        display: none; /* Ocultar notas al margen en pantallas pequeñas */
-    }
-    body {
-        width: 84%; /* Ancho adaptado */
-        margin-left: 8%;
-        margin-right: 8%;
-        font-size: calc(1.5rem + 2vw); /* Ajuste proporcional */
-    }
+
     h1 {
         font-weight: 400;
-        margin-top: 4rem;
+        margin-top: 2rem;
         margin-bottom: 1.5rem;
         font-size: 3.2rem;
         line-height: 1;
     }
-    h2, h3 {
+
+    h2 {
         margin-top: 2rem;
         margin-bottom: 2rem;
-        font-size: calc(1.8 + 0.5vw); /* Ajuste proporcional */
+        /* el anterior calc(1.8 + 0.5vw) era inválido (sin unidad) y se descartaba */
+        font-size: 1.9rem;
     }
+
+    h3 {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
     article, section {
         width: 100%; /* Ancho adaptado */
         font-size: 1.4rem;
         line-height: 2rem;
     }
+
+    /* tufte.min.css ya hace estas reglas a 760px, pero base.css carga después
+       y sus reglas sin media query (width 55%/50%) ganan por orden: hay que
+       volver a ponerlas aquí para que el texto ocupe todo el ancho. */
+    section > p,
+    section > footer,
+    section > table,
+    section > dl,
+    section > ol,
+    section > ul,
+    blockquote p,
+    blockquote footer {
+        width: 100%;
+    }
+
+    figure {
+        max-width: 100%;
+    }
+
+    /* Notas al margen de los posts: ilegibles en móvil, se ocultan */
+    .marginnote,
+    .sidenote {
+        display: none; /* Ocultar notas al margen en pantallas pequeñas */
+    }
+
+    /* Las notas al pie van absolutas en el margen izquierdo en escritorio */
+    .footnotes li {
+        position: static;
+        width: auto;
+        text-align: left;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Iconos sociales del índice: van dentro de un span.marginnote, que el bloque
+   anterior oculta con display:none (ganaría por orden). Más específico
+   (section > span.marginnote) para que solo se vean en línea en el índice y
+   las marginnote de los posts sigan ocultas. Vale también para la franja
+   601–760px, donde tufte.min.css oculta las marginnote. */
+@media screen and (max-width: 760px) {
+    section > span.marginnote {
+        display: block;
+        float: none;
+        position: static;
+        width: auto;
+        right: auto;
+        margin: 0 0 1.5rem;
+        /* fa-stack escala en em: 1rem = botones de tema/idioma */
+        font-size: 1rem;
+        text-align: left;
+    }
+}
