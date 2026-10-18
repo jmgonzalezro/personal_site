@@ -80,13 +80,10 @@ def index():
 
             posts.append((post, post_date, title))
 
+    # Índice sin paginación: todos los posts del tirón, del más reciente al más
+    # antiguo. Con scroll no hace falta control de páginas; los enlaces
+    # antiguos con ?page=N siguen cayendo aquí sin romper nada.
     sorted_posts = sorted(posts, key=lambda x: x[1], reverse=True)
-
-    page = request.args.get("page", 1, type=int)
-    per_page = 5
-    start = (page - 1) * per_page
-    end = start + per_page
-    paginated_posts = sorted_posts[start:end]
 
     processed_posts = [
         {
@@ -94,16 +91,13 @@ def index():
             "title": post[2],
             "date": post[1],
         }
-        for post in paginated_posts
+        for post in sorted_posts
     ]
-    total_pages = (len(sorted_posts) + per_page - 1) // per_page
 
     response = make_response(
         render_template(
             "index.html",
             posts=processed_posts,
-            page=page,
-            total_pages=total_pages,
             t=TRANSLATIONS[lang],
             lang=lang,
         )

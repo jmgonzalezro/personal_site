@@ -63,9 +63,34 @@ Verificación mínima tras un cambio: arrancar la app y recorrer la ruta afectad
 - El idioma vive en la cookie `lang` (botón EN/ES). El CV (`terminal.html`)
   está solo en español a propósito: no lo traduzcas.
 
+## Traducción al inglés (posts/en/)
+
+- Mismo nombre de fichero que el español (`posts/en/Tmux_Esenciales.md`): así el
+  slug y la URL no cambian. `date:` idéntica; se traduce `title:` (y `subtitle:`
+  si existe). La ruta ya resuelve sola, no toques `app.py`.
+- **No se traduce**: bloques y comandos, rutas de imagen, URLs, `{marginnote}`,
+  ni los términos que el original ya usa en inglés (prefix, hotkeys,
+  enshittification, windows/panes). Mismo número de headings, imágenes, captions
+  y marginnotes, en el mismo orden.
+- **No se portan las erratas** ni los coloquialismos rotos del original
+  (arrunió, widnow, atrack): el inglés se escribe correcto.
+- **La voz es del autor, no del traductor**:
+  - tuteo → `you`; primera persona para las anécdotas propias.
+  - Párrafos largos encadenados con conectores (Y, Pero, Es lo mismo que →
+    And, But, It's the same thing as), nunca troceados en bullets.
+  - Cierre en frases cortas declarativas ("En conclusión. Que no siempre…").
+  - Registro alto y crudeza en el mismo texto, sin suavizar uno ni otro.
+  - Preguntas y dudas del autor entre paréntesis, tal cual ("(unlink?)").
+- **Localismos**: se conserva la idea, no la palabra. "que la ropa te dure 2
+  telediarios" → "that your clothes last you two news cycles". Nada de notas al
+  pie ni traducción literal; si es dudoso se marca en el commit para revisión.
+- Antes de dar por bueno un post: arrancar la app y recorrer `/` y el post con
+  la cookie `lang=en`, y volver a ES para comprobar que el español no cambió.
+
 ## Estructura
 
-- `app.py` único módulo. Rutas: `/` (índice paginado, 5 por página),
+- `app.py` único módulo. Rutas: `/` (índice con **todos** los posts, del más
+  reciente al más antiguo; scroll, sin paginación),
   `/posts/<slug>`, `/cv-terminal`. `/debug/posts` devuelve 404 a propósito.
 - `templates/`: `index.html`, `post.html`, `terminal.html` (CV).
 - CSS: `static/css/base.css` es el propio; `tufte*`, `font-awesome*`,
