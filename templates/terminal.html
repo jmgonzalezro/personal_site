@@ -4,306 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='terminal_icon.ico') }}" type="image/x-icon">
-    <title>orbits.py @ estetica</title>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/tufte.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}" type="text/css" media="all">
+    <title>neural.py · estetica</title>
 
     <style>
-        /* Terminal-specific styles */
         :root {
-            --terminal-bg: #0c0c0c;
-            --terminal-text: #00ff41;
-            --terminal-cursor: #ffffff;
-            --terminal-prompt: #00bfff;
-            --terminal-user: #ffff00;
-            --terminal-path: #ff6b35;
-            --terminal-border: #333333;
-            --terminal-success: #00ff00;
-            --terminal-info: #4da6ff;
-            --terminal-warning: #ffa500;
+            --bg: #050607;
+            --phosphor: #46ff8a;
+            --dim: #1f6b3f;
+            --faint: #6b8f7c;
+            --class-a: #46ff8a;
+            --class-b: #ffb266;
         }
 
-        [data-theme="dark"] {
-            --terminal-bg: #0f0f23;
-            --terminal-border: #444444;
+        * { box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            margin: 0;
         }
 
         body {
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            color: var(--terminal-text);
+            background: var(--bg);
+            color: var(--phosphor);
             font-family: 'Courier New', 'Liberation Mono', monospace;
-            margin: 0;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            min-height: 100vh;
         }
 
-        .terminal-container {
-            width: calc(100% - 40px);
-            height: calc(100vh - 40px);
-            background: var(--terminal-bg);
-            border: 2px solid var(--terminal-border);
-            border-radius: 10px;
-            margin: 20px;
-            box-sizing: border-box;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3),
-                        inset 0 0 20px rgba(0, 0, 0, 0.5);
+        /* Scanlines finas + viñeta: el look CRT sin ensuciar */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.16) 0px,
+                    rgba(0, 0, 0, 0.16) 1px,
+                    transparent 1px,
+                    transparent 3px
+                ),
+                radial-gradient(ellipse at center, transparent 52%,
+                                rgba(0, 0, 0, 0.55) 100%);
+            z-index: 2;
+        }
+
+        .back {
+            position: fixed;
+            top: 18px;
+            left: 22px;
+            z-index: 3;
+            color: var(--faint);
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover { color: var(--phosphor); }
+
+        main {
             position: relative;
-        }
-
-        .terminal-titlebar {
-            background: linear-gradient(90deg, #333 0%, #555 50%, #333 100%);
-            height: 30px;
+            flex: 1;
             display: flex;
             align-items: center;
-            padding: 0 15px;
-            border-bottom: 1px solid var(--terminal-border);
-            border-radius: 8px 8px 0 0;
+            justify-content: center;
+            min-height: 0;
+            padding: 0 12px;
+            z-index: 1;
         }
 
-        .terminal-buttons {
-            display: flex;
-            gap: 8px;
+        /* Halo tenue detrás del arte: da profundidad al fósforo */
+        main::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center,
+                                        rgba(70, 255, 138, 0.055), transparent 62%);
         }
 
-        .terminal-button {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: none;
-        }
-
-        .close { background: #ff5f57; }
-        .minimize { background: #ffbd2e; }
-        .maximize { background: #28ca42; }
-
-        .terminal-title {
-            flex: 1;
-            text-align: center;
-            color: #ccc;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .terminal-content {
-            padding: 15px 20px;
-            overflow-y: auto;
-            height: calc(100% - 30px);
-            box-sizing: border-box;
-        }
-
-        .terminal-output {
-            margin-bottom: 10px;
-            white-space: pre-wrap;
-            line-height: 1.6;
-            font-size: 14px;
-        }
-
-        .prompt { color: var(--terminal-prompt); font-weight: bold; }
-        .user { color: var(--terminal-user); font-weight: bold; }
-        .host { color: var(--terminal-path); font-weight: bold; }
-        .path { color: var(--terminal-info); }
-        .command { color: var(--terminal-text); font-weight: bold; }
-
-        .success {
-            color: var(--terminal-success);
-            text-shadow: 0 0 5px var(--terminal-success);
-        }
-
-        .info {
-            color: var(--terminal-info);
-            text-shadow: 0 0 5px var(--terminal-info);
-        }
-
-        .warning {
-            color: var(--terminal-warning);
-            text-shadow: 0 0 5px var(--terminal-warning);
-        }
-
-        .warning a, .info a {
-            color: inherit;
-            text-decoration: underline;
-        }
-
-        /* El replay ASCII: line-height 1 para que los píxeles de carácter
-           sean exactamente 0.6 x 1 em (Courier New) y las órbitas salgan
-           circulares. El font-size lo calcula JS según el ancho. */
         #replay {
-            margin: 12px 0;
+            position: relative;
+            margin: 0;
             line-height: 1;
             white-space: pre;
-            font-family: 'Courier New', 'Liberation Mono', monospace;
-            color: var(--terminal-text);
-            text-shadow: 0 0 7px rgba(0, 255, 65, 0.4);
+            color: var(--phosphor);
+            text-shadow: 0 0 7px rgba(70, 255, 138, 0.28);
+            /* fade del bucle: al final el arte se apaga y vuelve a nacer */
+            transition: opacity 0.45s ease;
         }
 
-        .cursor {
-            display: inline-block;
-            width: 0.6em;
-            height: 1.05em;
-            background: var(--terminal-cursor);
-            vertical-align: text-bottom;
-            animation: blink 1s infinite;
+        /* Niveles del mapa de decisión: del halo lejano al borde */
+        #replay .l1 { color: rgba(70, 255, 138, 0.10); }
+        #replay .l2 { color: rgba(70, 255, 138, 0.16); }
+        #replay .l3 { color: rgba(70, 255, 138, 0.24); }
+        #replay .l4 { color: rgba(70, 255, 138, 0.34); }
+        #replay .l5 { color: rgba(70, 255, 138, 0.46); }
+        #replay .l6 { color: rgba(70, 255, 138, 0.60); }
+        #replay .l7 { color: rgba(70, 255, 138, 0.74); }
+        #replay .l8 { color: rgba(70, 255, 138, 0.88); }
+        #replay .l9 { color: #9dffc4; }
+
+        /* Los dos puntos del dataset y el resto del dashboard */
+        #replay .p0 { color: var(--class-a); text-shadow: 0 0 8px rgba(70, 255, 138, 0.7); }
+        #replay .p1 { color: var(--class-b); text-shadow: 0 0 8px rgba(255, 178, 102, 0.65); }
+
+        footer {
+            padding: 0 22px 16px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--faint);
+            z-index: 1;
+            overflow-wrap: anywhere;
         }
 
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        .back-link {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            color: var(--terminal-prompt);
-            text-decoration: none;
-            z-index: 1000;
-            font-size: 14px;
-            background: rgba(0, 12, 12, 0.8);
-            padding: 8px 12px;
-            border: 1px solid var(--terminal-border);
-            border-radius: 5px;
-            backdrop-filter: blur(5px);
-            text-shadow: 0 0 5px var(--terminal-prompt);
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            background: rgba(0, 191, 255, 0.2);
-            box-shadow: 0 0 10px var(--terminal-prompt);
-        }
-
-        /* Dark Mode Toggle for terminal */
-        .dark-mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 1000;
-            padding: 0;
-        }
-
-        .dark-mode-toggle .fa-stack {
-            color: var(--terminal-prompt);
-            text-shadow: 0 0 5px var(--terminal-prompt);
-        }
-
-        .dark-mode-toggle:hover .fa-stack {
-            color: var(--terminal-success);
-            text-shadow: 0 0 10px var(--terminal-success);
-        }
-
-        /* Scrollbar styling */
-        .terminal-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .terminal-content::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-
-        .terminal-content::-webkit-scrollbar-thumb {
-            background: var(--terminal-prompt);
-            border-radius: 4px;
-        }
+        footer .cmd { color: var(--dim); }
+        footer a { color: var(--dim); text-decoration: none; }
+        footer a:hover { color: var(--phosphor); }
 
         @media screen and (max-width: 760px) {
-            .terminal-container {
-                margin: 10px;
-                width: calc(100% - 20px);
-                height: calc(100vh - 20px);
-                font-size: 12px;
-            }
-
-            .terminal-content {
-                padding: 12px;
-            }
-
-            .back-link {
-                top: 20px;
-                left: 20px;
-                padding: 6px 10px;
-                font-size: 12px;
-            }
+            .back { top: 12px; left: 14px; font-size: 12px; }
+            footer { padding: 0 14px 12px; font-size: 10px; }
         }
     </style>
 </head>
 
 <body>
-    <!-- Dark Mode Toggle -->
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar modo noche">
-        <span class="fa-stack fa-lg">
-            <i class="fa fa-square-o fa-stack-2x"></i>
-            <i id="mode-icon" class="fa fa-moon-o fa-stack-1x"></i>
-        </span>
-    </button>
+    <a href="{{ url_for('index') }}" class="back">← blog</a>
 
-    <a href="{{ url_for('index') }}" class="back-link">← Volver al blog</a>
+    <main>
+        <pre id="replay" aria-label="Entrenamiento de una red neuronal dibujado en ASCII"></pre>
+    </main>
 
-    <div class="terminal-container">
-        <div class="terminal-titlebar">
-            <div class="terminal-buttons">
-                <div class="terminal-button close"></div>
-                <div class="terminal-button minimize"></div>
-                <div class="terminal-button maximize"></div>
-            </div>
-            <div class="terminal-title">jose@estetica: ~/demo</div>
+    <footer>
+        <div class="cmd">jose@estetica:~$ python3 neural.py --epochs 300</div>
+        <div>
+            # mlp 2-16-1 · 65 params · adam · espiral de 2 brazos ·
+            mismo código en tu terminal:
+            <a href="{{ url_for('static', filename='neural.py') }}">curl -fsSL
+                {{ request.host }}/static/neural.py</a> | python3
         </div>
-
-        <div class="terminal-content">
-            <div class="terminal-output">
-<span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~/demo</span><span class="prompt">$</span> <span class="command" id="typed"></span><span class="cursor" id="cursor"></span>
-            </div>
-
-            <pre id="replay" aria-label="Simulación n-cuerpos en ASCII"></pre>
-
-            <div class="terminal-output info" id="status"># cargando replay…</div>
-
-            <div class="terminal-output info"># n-cuerpos: sol + 4 planetas + 1 cometa (velocity Verlet + softening).
-# cada cuerpo deja estela: el campo de brillo decae entre frames.</div>
-
-            <div class="terminal-output warning"># el mismo código corre en una terminal de verdad (solo stdlib):
-#   curl -fsSL <a href="{{ url_for('static', filename='orbits.py') }}">www.jmgonzalezro.com/static/orbits.py</a> | python3</div>
-
-            <div class="terminal-output">
-<span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~/demo</span><span class="prompt">$</span> <span class="cursor"></span>
-            </div>
-        </div>
-    </div>
+        <noscript><div># necesitas JavaScript para reproducir el entrenamiento</div></noscript>
+    </footer>
 
     <script>
-        const COMMAND = "python3 orbits.py";
-
-        function typeCommand(el, text, done) {
-            let i = 0;
-            (function tick() {
-                if (i <= text.length) {
-                    el.textContent = text.slice(0, i++);
-                    setTimeout(tick, 45 + Math.random() * 55);
-                } else {
-                    done();
-                }
-            })();
-        }
-
-        // Replay: JSON con meta al claro + frames en zlib+base64, generado
-        // por static/orbits.py --web. Se elige la rejilla según el viewport.
         const replay = document.getElementById('replay');
-        const status = document.getElementById('status');
-        let current = null;  // {cols, frames} para re-escalado en resize
+        const RAMP = ' .:-=+*#%@';
 
-        function fitFont(cols) {
-            const avail = replay.parentElement.clientWidth;
-            // Courier New: ancho de carácter = 0.6em. Tope 16px.
-            replay.style.fontSize =
-                Math.min(16, Math.max(4, avail / (cols * 0.6))) + 'px';
-        }
-
+        // El JSON lo genera static/neural.py --web: metadatos + frames en
+        // zlib+base64. Se elige la rejilla según el viewport.
         async function loadReplay(url) {
             const res = await fetch(url);
             if (!res.ok) throw new Error(url + ' -> ' + res.status);
@@ -314,72 +166,82 @@
             const bytes = Uint8Array.from(atob(doc.data), c => c.charCodeAt(0));
             const stream = new Blob([bytes]).stream()
                 .pipeThrough(new DecompressionStream('deflate'));
-            const text = await new Response(stream).text();
-            return { doc, frames: JSON.parse(text) };
+            return { doc, frames: JSON.parse(await new Response(stream).text()) };
         }
 
-        function play(doc, frames) {
-            current = { cols: doc.cols };
-            fitFont(doc.cols);
-            let i = 0;
-            replay.textContent = frames[0];
-            setInterval(() => {
-                replay.textContent = frames[++i % frames.length];
-            }, 1000 / doc.fps);
+        // Los frames son texto plano: el color sale de cada carácter. 'o' y
+        // 'x' son los dos puntos del dataset; el resto es la rampa del mapa
+        // de decisión (espacio = lejos del borde, '@' = justo en el borde).
+        // Se agrupan caracteres consecutivos del mismo color en un <span>
+        // para no crear miles de nodos por frame.
+        function toHTML(frame) {
+            let out = '', cls = null, buf = '';
+            const flush = () => {
+                if (buf) out += '<span class="' + cls + '">' + buf + '</span>';
+                buf = '';
+            };
+            for (const ch of frame) {
+                let c;
+                if (ch === '\n') { c = null; }
+                else if (ch === 'o') { c = 'p0'; }
+                else if (ch === 'x') { c = 'p1'; }
+                else {
+                    const lv = RAMP.indexOf(ch);
+                    c = lv > 0 ? 'l' + lv : 'l1';  // el espacio va como l1 (casi invisible)
+                }
+                if (c !== cls) { flush(); cls = c; }
+                buf += ch === '&' ? '&amp;' : ch === '<' ? '&lt;'
+                     : ch === '>' ? '&gt;' : ch;
+            }
+            flush();
+            return out;
+        }
+
+        // El <pre> se escala para llenar el viewport sin deformar. Se mide el
+        // ancho real de un carácter con la fuente del sistema (no todas las
+        // monoespaciadas miden 0.6em) y se limita por ancho y por alto.
+        function fit(cols, rows) {
+            const main = document.querySelector('main');
+            const probe = document.createElement('span');
+            probe.textContent = '0'.repeat(cols);
+            probe.style.cssText = 'position:absolute;visibility:hidden;' +
+                                  'white-space:pre;font-size:100px;';
+            document.body.appendChild(probe);
+            const perCol = probe.getBoundingClientRect().width / cols / 100;
+            probe.remove();
+
+            const availW = main.clientWidth - 24;
+            const availH = main.clientHeight - 24;
+            replay.style.fontSize =
+                Math.min(26, availW / (perCol * cols), availH / rows) + 'px';
         }
 
         async function start() {
             const small = window.matchMedia('(max-width: 760px)').matches;
             const url = small
-                ? "{{ url_for('static', filename='data/orbits-mobile.json') }}"
-                : "{{ url_for('static', filename='data/orbits-desktop.json') }}";
+                ? "{{ url_for('static', filename='data/neural-mobile.json') }}"
+                : "{{ url_for('static', filename='data/neural-desktop.json') }}";
             try {
                 const { doc, frames } = await loadReplay(url);
-                status.textContent = '# replay: ' + doc.cols + 'x' + doc.rows +
-                    ', ' + doc.count + ' frames @ ' + doc.fps + 'fps';
-                play(doc, frames);
+                const html = frames.map(toHTML);
+                fit(doc.cols, doc.rows);
+                window.addEventListener('resize', () => fit(doc.cols, doc.rows));
+
+                const fadeAt = Math.max(1, html.length - 4);
+                let i = 0;
+                replay.innerHTML = html[0];
+                setInterval(() => {
+                    if (i === fadeAt) replay.style.opacity = '0';
+                    i = (i + 1) % html.length;
+                    if (i === 0) replay.style.opacity = '1';
+                    replay.innerHTML = html[i];
+                }, 1000 / doc.fps);
             } catch (e) {
-                status.textContent = '> replay no disponible: ' + e.message;
+                replay.textContent = '> replay no disponible: ' + e.message;
             }
         }
 
-        window.addEventListener('resize', () => {
-            if (current) fitFont(current.cols);
-        });
-
-        // arranque: se escribe el comando y arranca la simulación
-        typeCommand(document.getElementById('typed'), COMMAND, start);
-
-        // Dark Mode Toggle Functionality (adapted for terminal)
-        function toggleDarkMode() {
-            const body = document.body;
-            const modeIcon = document.getElementById('mode-icon');
-
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                modeIcon.className = 'fa fa-moon-o fa-stack-1x';
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                modeIcon.className = 'fa fa-sun-o fa-stack-1x';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        // Initialize theme on page load
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const modeIcon = document.getElementById('mode-icon');
-
-            if (savedTheme === 'dark' || (savedTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.body.setAttribute('data-theme', 'dark');
-                modeIcon.className = 'fa fa-sun-o fa-stack-1x';
-            } else {
-                modeIcon.className = 'fa fa-moon-o fa-stack-1x';
-            }
-        }
-
-        initializeTheme();
+        start();
     </script>
 </body>
 </html>

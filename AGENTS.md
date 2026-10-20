@@ -92,24 +92,28 @@ Verificación mínima tras un cambio: arrancar la app y recorrer la ruta afectad
 - `app.py` único módulo. Rutas: `/` (índice con **todos** los posts, del más
   reciente al más antiguo; scroll, sin paginación),
   `/posts/<slug>`, `/cv-terminal`. `/debug/posts` devuelve 404 a propósito.
-- `templates/`: `index.html`, `post.html`, `terminal.html` (demo n-body).
+- `templates/`: `index.html`, `post.html`, `terminal.html` (demo de ML).
 - CSS: `static/css/base.css` es el propio; `tufte*`, `font-awesome*`,
   `fot-awesome*` son de terceros: no editar.
 
-## Demo n-body en /cv-terminal
+## Demo de entrenamiento en /cv-terminal
 
 - `terminal.html` **no es el CV** (se eliminó el intérprete de comandos con el
   CV; el dueño decidirá cómo ponerlo en el web en el futuro). Ahora reproduce
-  un "vídeo" ASCII de `static/orbits.py` (n-cuerpos, velocity Verlet +
-  softening, solo stdlib) con estelas.
-- La web no simula nada: Python pregenera los frames y se sirven estáticos.
-  Si tocas `orbits.py`, regenera y commitea ambos JSON:
-  `python static/orbits.py --size 76x24 --web static/data/orbits-desktop.json`
-  `python static/orbits.py --size 44x20 --web static/data/orbits-mobile.json`
+  un "vídeo" ASCII de `static/neural.py`: una MLP real (2-16-1, tanh +
+  sigmoid, entropía cruzada, Adam, solo stdlib) aprendiendo una espiral de dos
+  brazos. Cada frame es un dashboard: mapa de decisión con los puntos del
+  dataset, curva de loss, accuracy y métricas.
+- La web no entrena nada: Python pregenera los frames y se sirven estáticos.
+  Si tocas `neural.py`, regenera y commitea ambos JSON:
+  `python static/neural.py --size 76x24 --web static/data/neural-desktop.json`
+  `python static/neural.py --size 44x36 --web static/data/neural-mobile.json`
 - El mismo script corre en la terminal del visitante (por eso vive en
   `static/`, accesible por URL):
-  `curl -sL <dominio>/static/orbits.py | python3` (sin args → modo terminal).
+  `curl -fsSL <dominio>/static/neural.py | python3` (sin args → entrena y
+  reproduce en bucle; `--preview N` imprime un frame y sale).
 - El JSON comprime los frames con zlib+base64; la web los abre con
-  `DecompressionStream('deflate')`. El render en la web usa `line-height: 1`
-  en el `<pre>` porque la corrección de aspecto de las órbitas asume
-  caracteres de 0.6 x 1 em: no tocarlo sin tocar también `--char-height`.
+  `DecompressionStream('deflate')` y colorea por carácter (`o` y `x` son las
+  dos clases; el resto, la rampa del contorno). El `<pre>` usa `line-height: 1`
+  y la geometría asume celdas de 0.6 x 1 em: si cambias una, cambia la otra
+  (`--char-height` en el script).
