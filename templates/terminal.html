@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='terminal_icon.ico') }}" type="image/x-icon">
-    <title>Terminal CV - José M. González</title>
+    <title>orbits.py @ estetica</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tufte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}" type="text/css" media="all">
-    
+
     <style>
         /* Terminal-specific styles */
         :root {
@@ -21,18 +21,12 @@
             --terminal-path: #ff6b35;
             --terminal-border: #333333;
             --terminal-success: #00ff00;
-            --terminal-error: #ff4444;
             --terminal-info: #4da6ff;
             --terminal-warning: #ffa500;
         }
 
         [data-theme="dark"] {
             --terminal-bg: #0f0f23;
-            --terminal-text: #00ff41;
-            --terminal-cursor: #ffffff;
-            --terminal-prompt: #00bfff;
-            --terminal-user: #ffff00;
-            --terminal-path: #ff6b35;
             --terminal-border: #444444;
         }
 
@@ -53,10 +47,9 @@
             border: 2px solid var(--terminal-border);
             border-radius: 10px;
             margin: 20px;
-            padding: 0;
             box-sizing: border-box;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3), 
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3),
                         inset 0 0 20px rgba(0, 0, 0, 0.5);
             position: relative;
         }
@@ -81,7 +74,6 @@
             height: 12px;
             border-radius: 50%;
             border: none;
-            cursor: pointer;
         }
 
         .close { background: #ff5f57; }
@@ -96,89 +88,25 @@
             font-weight: bold;
         }
 
-        .terminal-header {
-            color: var(--terminal-success);
-            margin: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #333;
-            font-size: 14px;
-            text-shadow: 0 0 10px var(--terminal-success);
-        }
-
         .terminal-content {
-            height: calc(100% - 80px);
+            padding: 15px 20px;
             overflow-y: auto;
-            padding: 0 20px;
+            height: calc(100% - 30px);
+            box-sizing: border-box;
         }
 
         .terminal-output {
             margin-bottom: 10px;
             white-space: pre-wrap;
             line-height: 1.6;
+            font-size: 14px;
         }
 
-        .prompt {
-            color: var(--terminal-prompt);
-            font-weight: bold;
-            text-shadow: 0 0 5px var(--terminal-prompt);
-        }
-
-        .user {
-            color: var(--terminal-user);
-            font-weight: bold;
-        }
-
-        .host {
-            color: var(--terminal-path);
-            font-weight: bold;
-        }
-
-        .path {
-            color: var(--terminal-info);
-        }
-
-        .command {
-            color: var(--terminal-text);
-            font-weight: bold;
-        }
-
-        .input-line {
-            display: flex;
-            align-items: center;
-            margin: 15px 20px;
-            padding: 5px;
-            background: rgba(0, 255, 65, 0.05);
-            border-radius: 5px;
-            border-left: 3px solid var(--terminal-prompt);
-        }
-
-        #terminal-input {
-            background: transparent;
-            border: none;
-            color: var(--terminal-text);
-            font-family: inherit;
-            font-size: inherit;
-            outline: none;
-            flex: 1;
-            margin-left: 8px;
-            font-weight: bold;
-        }
-
-        .cursor {
-            background-color: var(--terminal-cursor);
-            animation: blink 1s infinite;
-            margin-left: 2px;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        .error {
-            color: var(--terminal-error);
-            text-shadow: 0 0 5px var(--terminal-error);
-        }
+        .prompt { color: var(--terminal-prompt); font-weight: bold; }
+        .user { color: var(--terminal-user); font-weight: bold; }
+        .host { color: var(--terminal-path); font-weight: bold; }
+        .path { color: var(--terminal-info); }
+        .command { color: var(--terminal-text); font-weight: bold; }
 
         .success {
             color: var(--terminal-success);
@@ -195,37 +123,35 @@
             text-shadow: 0 0 5px var(--terminal-warning);
         }
 
-        .ascii-art {
-            color: var(--terminal-success);
-            font-family: monospace;
-            font-size: 10px;
-            text-shadow: 0 0 8px var(--terminal-success);
-            margin: 10px 0;
-        }
-
-        .section-header {
-            color: var(--terminal-prompt);
-            font-weight: bold;
+        .warning a, .info a {
+            color: inherit;
             text-decoration: underline;
-            text-shadow: 0 0 5px var(--terminal-prompt);
-            margin-top: 15px;
         }
 
-        .progress-bar {
-            background: #333;
-            height: 8px;
-            width: 200px;
-            border-radius: 4px;
-            margin: 5px 0;
-            overflow: hidden;
+        /* El replay ASCII: line-height 1 para que los píxeles de carácter
+           sean exactamente 0.6 x 1 em (Courier New) y las órbitas salgan
+           circulares. El font-size lo calcula JS según el ancho. */
+        #replay {
+            margin: 12px 0;
+            line-height: 1;
+            white-space: pre;
+            font-family: 'Courier New', 'Liberation Mono', monospace;
+            color: var(--terminal-text);
+            text-shadow: 0 0 7px rgba(0, 255, 65, 0.4);
+        }
+
+        .cursor {
             display: inline-block;
+            width: 0.6em;
+            height: 1.05em;
+            background: var(--terminal-cursor);
+            vertical-align: text-bottom;
+            animation: blink 1s infinite;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--terminal-success), var(--terminal-info));
-            border-radius: 4px;
-            transition: width 0.3s ease;
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         .back-link {
@@ -252,6 +178,9 @@
 
         /* Dark Mode Toggle for terminal */
         .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             background: none;
             border: none;
             cursor: pointer;
@@ -283,38 +212,24 @@
             border-radius: 4px;
         }
 
-        .terminal-content::-webkit-scrollbar-thumb:hover {
-            background: var(--terminal-success);
-        }
-
-        @media (max-width: 600px) {
+        @media screen and (max-width: 760px) {
             .terminal-container {
                 margin: 10px;
                 width: calc(100% - 20px);
                 height: calc(100vh - 20px);
                 font-size: 12px;
             }
-            
+
+            .terminal-content {
+                padding: 12px;
+            }
+
             .back-link {
                 top: 20px;
                 left: 20px;
                 padding: 6px 10px;
                 font-size: 12px;
             }
-
-            .ascii-art {
-                font-size: 8px;
-            }
-        }
-
-        /* Matrix-like effect */
-        @keyframes matrix {
-            0% { opacity: 0; transform: translateY(-20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .matrix-text {
-            animation: matrix 0.5s ease-in-out;
         }
     </style>
 </head>
@@ -337,457 +252,109 @@
                 <div class="terminal-button minimize"></div>
                 <div class="terminal-button maximize"></div>
             </div>
-            <div class="terminal-title">Terminal CV - José M. González</div>
+            <div class="terminal-title">jose@estetica: ~/demo</div>
         </div>
 
-        <div class="terminal-header">
-            <div class="ascii-art">
-╔═══════════════════════════════════════════════════════════════╗
-║  ██╗ ██████╗ ███████╗███████╗    ███╗   ███╗                ║
-║  ██║██╔═══██╗██╔════╝██╔════╝    ████╗ ████║                ║
-║  ██║██║   ██║███████╗█████╗      ██╔████╔██║                ║
-║  ██║██║   ██║╚════██║██╔══╝      ██║╚██╔╝██║                ║
-║  ██║╚██████╔╝███████║███████╗    ██║ ╚═╝ ██║                ║
-║  ╚═╝ ╚═════╝ ╚══════╝╚══════╝    ╚═╝     ╚═╝                ║
-║                                                              ║
-║              🚀 DESARROLLADOR FULL STACK 🚀                 ║
-╚═══════════════════════════════════════════════════════════════╝
+        <div class="terminal-content">
+            <div class="terminal-output">
+<span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~/demo</span><span class="prompt">$</span> <span class="command" id="typed"></span><span class="cursor" id="cursor"></span>
             </div>
-            <div class="success">
-Sistema inicializado correctamente ✓
-Conexión establecida con servidor CV
-Tipo 'help' para ver comandos disponibles
+
+            <pre id="replay" aria-label="Simulación n-cuerpos en ASCII"></pre>
+
+            <div class="terminal-output info" id="status"># cargando replay…</div>
+
+            <div class="terminal-output info"># n-cuerpos: sol + 4 planetas + 1 cometa (velocity Verlet + softening).
+# cada cuerpo deja estela: el campo de brillo decae entre frames.</div>
+
+            <div class="terminal-output warning"># el mismo código corre en una terminal de verdad (solo stdlib):
+#   curl -fsSL <a href="{{ url_for('static', filename='orbits.py') }}">www.jmgonzalezro.com/static/orbits.py</a> | python3</div>
+
+            <div class="terminal-output">
+<span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~/demo</span><span class="prompt">$</span> <span class="cursor"></span>
             </div>
-        </div>
-
-        <div class="terminal-content" id="terminal-content">
-            <div id="terminal-output">
-                <div class="terminal-output matrix-text">
-<span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~</span><span class="prompt">$</span> <span class="command">whoami</span>
-<span class="info">José M. González - Desarrollador Full Stack & Escritor</span>
-
-<span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~</span><span class="prompt">$</span> <span class="command">ls -la</span>
-<span class="success">total 5</span>
-<span class="info">-rw-r--r-- 1 jose jose 1.2K mar 31 12:00</span> <span class="warning">experiencia.txt</span>
-<span class="info">-rw-r--r-- 1 jose jose 0.8K mar 31 12:00</span> <span class="warning">educacion.txt</span>
-<span class="info">-rw-r--r-- 1 jose jose 1.5K mar 31 12:00</span> <span class="warning">habilidades.txt</span>
-<span class="info">-rw-r--r-- 1 jose jose 2.1K mar 31 12:00</span> <span class="warning">proyectos.txt</span>
-<span class="info">-rw-r--r-- 1 jose jose 0.6K mar 31 12:00</span> <span class="warning">contacto.txt</span>
-
-<span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~</span><span class="prompt">$</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="input-line">
-            <span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~</span><span class="prompt">$</span>
-            <input type="text" id="terminal-input" autocomplete="off" autofocus>
-            <span class="cursor">&nbsp;</span>
         </div>
     </div>
 
     <script>
-        // Terminal functionality
-        const terminalInput = document.getElementById('terminal-input');
-        const terminalOutput = document.getElementById('terminal-output');
-        const terminalContent = document.getElementById('terminal-content');
-        let commandHistory = [];
-        let historyIndex = -1;
+        const COMMAND = "python3 orbits.py";
 
-        // CV Data with José Manuel González Rodríguez's real information
-        const cvData = {
-            whoami: `<div class="ascii-art">
-    ╭─────────────────────────────────────────────────╮
-    │  👤 José Manuel González Rodríguez              │
-    │  🤖 Data & Machine Learning Engineer            │
-    │  📍 Madrid, España                              │
-    │  💡 Senior ML Engineer & Data Scientist (7+ años) │
-    ╰─────────────────────────────────────────────────╯
-</div>
-<span class="info">🚀 Delivering high-performance, customer-centric AI solutions</span><br>
-<span class="info">🎯 Entrepreneurial mindset with academic and business background</span><br>
-<span class="success">📧 Email:</span> <span class="warning">jose@esteticaonline.com</span><br>
-<span class="success">🔗 LinkedIn:</span> <span class="warning">linkedin.com/in/jmgonzalezro</span><br>
-<span class="success">🐙 GitHub:</span> <span class="warning">github.com/jmgonzalezro</span>`,
-
-            experience: `<div class="section-header">💼 EXPERIENCIA PROFESIONAL</div>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
-
-<span class="success">🤖 Machine Learning Lead</span> <span class="info">@ Minsait/Indra</span><br>
-<span class="warning">Febrero 2023 - Presente | Madrid, España | IT</span><br><br>
-
-<span class="info">SCOTTISHPOWER/IBERDROLA:</span><br>
-   <span class="warning">▸</span> ML Lead en proyectos de extracción de texto para energía renovable<br>
-   <span class="warning">▸</span> Soluciones con LLMs para extracción de datos + OCR<br>
-   <span class="warning">▸</span> Docker y Kubernetes para containerización y deployment<br><br>
-
-<span class="info">MAPFRE:</span><br>
-   <span class="warning">▸</span> ML Lead en proyectos de cross-selling para seguros<br>
-   <span class="warning">▸</span> IA & ML SOTA models para predicciones y clasificaciones<br>
-   <span class="warning">▸</span> Diseño de sistemas de monitoreo y benchmarking<br><br>
-
-<span class="info">ENDESA/ENEL SPAIN:</span><br>
-   <span class="warning">▸</span> Lead developer: predicción de consumo energético y facturación<br>
-   <span class="warning">▸</span> Refactoring y mantenimiento de 3 proyectos + automatización<br>
-   <span class="warning">▸</span> Team Manager (equipo interno y externo)<br>
-   <span class="warning">▸</span> Best practices en ML y Python, CI/CD<br><br>
-
-<span class="info">DRAGADOS:</span><br>
-   <span class="warning">▸</span> Lead proyectos cross-funcionales: extracción de datos<br>
-   <span class="warning">▸</span> Computer Vision para OCR y text parsing<br>
-   <span class="warning">▸</span> ML pipeline desde cero + automatización ETL<br>
-   <span class="warning">▸</span> Coach Agile y MVP mindset<br><br>
-
-<span class="success">🔬 ML Engineer & Data Scientist</span> <span class="info">@ Sanz Clima</span><br>
-<span class="warning">Agosto 2021 - Febrero 2023 | Madrid | Climatización</span><br>
-   <span class="warning">▸</span> Proyectos de soluciones business enfocadas en datos<br>
-   <span class="warning">▸</span> ETL con AWS (S3, Boto3, Athena, DynamoDB)<br>
-   <span class="warning">▸</span> Dashboards interactivos con GUI consumer-centric<br><br>
-
-<span class="success">📊 ML & Data Scientist</span> <span class="info">@ Ayscom</span><br>
-<span class="warning">Agosto 2020 - Agosto 2021 | Madrid | Telecomunicaciones</span><br>
-   <span class="warning">▸</span> +60% incremento en visualizaciones de datos para clientes<br>
-   <span class="warning">▸</span> Automatización: reducción 80% tiempo de extracción<br>
-   <span class="warning">▸</span> Procesos NLP para limpieza automática de datos<br><br>
-
-<span class="success">📈 Data Analyst</span> <span class="info">@ Sanitas</span><br>
-<span class="warning">Agosto 2017 - Agosto 2020 | Madrid | Seguros de Salud</span><br>
-   <span class="warning">▸</span> Extract, Transform, Process: presentaciones y visualizaciones<br>
-   <span class="warning">▸</span> Automatización de extracción y pre-procesamiento<br>
-   <span class="warning">▸</span> Mantenimiento de database para reportes históricos`,
-
-            education: `<div class="section-header">🎓 FORMACIÓN ACADÉMICA</div>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
-
-<span class="success">🔬 PHD in Developmental Psychology and Machine Learning</span><br>
-<span class="info">Universidad Complutense de Madrid (UCM)</span><br>
-<span class="warning">Septiembre 2017 - Septiembre 2020</span><br>
-<span class="warning">Especialización:</span> Intersección entre psicología del desarrollo y ML<br><br>
-
-<span class="success">🤖 Master in Data Science and Machine Learning</span><br>
-<span class="info">Universidad Complutense de Madrid (UCM)</span><br>
-<span class="warning">Septiembre 2019 - Agosto 2020</span><br>
-<span class="warning">Especialización:</span> Data Science y Machine Learning<br><br>
-
-<span class="success">📊 Formación Continua:</span><br>
-   <span class="info">✓</span> 7+ años de experiencia práctica en ML/Data Science<br>
-   <span class="info">✓</span> Liderazgo técnico en múltiples sectores (IT, Energía, Seguros)<br>
-   <span class="info">✓</span> Especialización en Computer Vision y NLP<br>
-   <span class="info">✓</span> Experiencia en arquitecturas cloud (AWS, Azure)`,
-
-            skills: `<div class="section-header">💻 HABILIDADES TÉCNICAS</div>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
-
-<span class="success">🐍 Lenguajes de Programación:</span><br>
-   <span class="warning">Python</span> (Experto)        <span class="progress-bar"><span class="progress-fill" style="width: 95%"></span></span> 95%<br>
-   <span class="warning">SQL</span> (Avanzado)         <span class="progress-bar"><span class="progress-fill" style="width: 85%"></span></span> 85%<br>
-   <span class="warning">NoSQL</span> (Intermedio)     <span class="progress-bar"><span class="progress-fill" style="width: 75%"></span></span> 75%<br><br>
-
-<span class="success">🤖 Machine Learning & AI:</span><br>
-   <span class="info">Frameworks:</span> SciKit Learn, XGBoost, Pandas<br>
-   <span class="info">Computer Vision:</span> OpenCV, Tesseract (OCR)<br>
-   <span class="info">NLP:</span> Text processing, LLMs, data extraction<br>
-   <span class="info">Algorithms:</span> KNN, KMeans, SOTA models<br><br>
-
-<span class="success">☁️ Cloud & Infrastructure:</span><br>
-   <span class="info">AWS:</span> S3, Boto3, Athena, DynamoDB, SageMaker<br>
-   <span class="info">Azure:</span> Machine Learning services<br>
-   <span class="info">Containers:</span> Docker, Kubernetes<br>
-   <span class="info">Databases:</span> CassandraDB, SQL, NoSQL<br><br>
-
-<span class="success">🛠️ Desarrollo & DevOps:</span><br>
-   <span class="info">Version Control:</span> Git, Gitflow, Bitbucket<br>
-   <span class="info">Web Frameworks:</span> Flask<br>
-   <span class="info">Systems:</span> Linux, SSH<br>
-   <span class="info">CI/CD:</span> Deployment automation, best practices<br><br>
-
-<span class="success">📊 Data & Analytics:</span><br>
-   <span class="info">Processing:</span> Pandas, PySpark, ETL pipelines<br>
-   <span class="info">Visualization:</span> Grafana, Tableau, PowerBI<br>
-   <span class="info">GIS:</span> Leaflet (mapas interactivos)<br>
-   <span class="info">Office:</span> Excel (nivel avanzado)<br><br>
-
-<span class="success">🎯 Especialidades:</span><br>
-   <span class="warning">▸</span> End-to-end ML pipelines desde cero<br>
-   <span class="warning">▸</span> Liderazgo técnico y gestión de equipos<br>
-   <span class="warning">▸</span> Automatización de procesos de datos<br>
-   <span class="warning">▸</span> Soluciones customer-centric con AI`,
-
-            projects: `<div class="section-header">🚀 PROYECTOS DESTACADOS</div>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
-
-<span class="success">⚡ Extracción de Datos - Energías Renovables</span><br>
-<span class="info">ScottishPower/Iberdrola @ Minsait</span><br>
-   <span class="warning">Tecnologías:</span> LLMs, OCR, Docker, Kubernetes<br>
-   <span class="warning">Impacto:</span> Automatización completa de extracción documental<br>
-   <span class="warning">Rol:</span> Machine Learning Lead<br><br>
-
-<span class="success">💰 Cross-selling con IA</span><br>
-<span class="info">MAPFRE @ Minsait</span><br>
-   <span class="warning">Tecnologías:</span> SOTA ML models, monitoring systems<br>
-   <span class="warning">Impacto:</span> Predicciones y clasificaciones para seguros<br>
-   <span class="warning">Rol:</span> ML Lead + sistema de benchmarking<br><br>
-
-<span class="success">⚡ Predicción de Consumo Energético</span><br>
-<span class="info">ENDESA/ENEL @ Minsait</span><br>
-   <span class="warning">Tecnologías:</span> Python, ML pipelines, CI/CD<br>
-   <span class="warning">Impacto:</span> 2 proyectos + refactoring de 3 existentes<br>
-   <span class="warning">Rol:</span> Lead Developer + Team Manager<br><br>
-
-<span class="success">📄 Reducción 5x en Procesamiento Documental</span><br>
-<span class="info">DRAGADOS @ Minsait</span><br>
-   <span class="warning">Tecnologías:</span> Computer Vision, OCR, ETL automation<br>
-   <span class="warning">Impacto:</span> Reducción 80% tiempo procesamiento<br>
-   <span class="warning">Metodología:</span> Agile, MVP mindset<br><br>
-
-<span class="success">🌡️ Dashboards Interactivos Climatización</span><br>
-<span class="info">Sanz Clima</span><br>
-   <span class="warning">Tecnologías:</span> AWS (S3, Athena, SageMaker), Flask, Leaflet<br>
-   <span class="warning">Impacto:</span> Producto clave para departamento de ventas<br>
-   <span class="warning">Características:</span> Consumer-centric GUI, mapas interactivos<br><br>
-
-<span class="success">📈 Automatización +60% Visualizaciones</span><br>
-<span class="info">Ayscom (Telecomunicaciones)</span><br>
-   <span class="warning">Tecnologías:</span> Python, NLP, CassandraDB, Grafana<br>
-   <span class="warning">Impacto:</span> 80% reducción tiempo extracción (minutos → segundos)<br>
-   <span class="warning">Innovación:</span> Proceso manual → completamente automatizado`,
-
-            contact: `<div class="section-header">📬 INFORMACIÓN DE CONTACTO</div>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
-
-<div class="ascii-art">
-   ╭─ José Manuel González Rodríguez ──────────────╮<br>
-   │                                               │<br>
-   │  👤 Data & Machine Learning Engineer          │<br>
-   │  📧 Email:    jose@esteticaonline.com         │<br>
-   │  🔗 LinkedIn: linkedin.com/in/jmgonzalezro    │<br>
-   │  🐙 GitHub:   github.com/jmgonzalezro         │<br>
-   │  🌐 Website:  esteticaonline.com              │<br>
-   │  📍 Madrid, España                            │<br>
-   │                                               │<br>
-   ╰───────────────────────────────────────────────╯<br>
-</div><br>
-
-<span class="success">🎯 Especialización Principal:</span><br>
-   <span class="warning">▸</span> <span class="info">7+ años</span> en Machine Learning y Data Science<br>
-   <span class="warning">▸</span> Liderazgo técnico en proyectos enterprise<br>
-   <span class="warning">▸</span> Sectores: IT, Energía, Seguros, Telecomunicaciones, Salud<br>
-   <span class="warning">▸</span> End-to-end ML pipelines y automatización<br><br>
-
-<span class="success">💼 Disponible para:</span><br>
-   <span class="warning">▸</span> Proyectos de Machine Learning y Data Science<br>
-   <span class="warning">▸</span> Liderazgo técnico y consultoría en IA<br>
-   <span class="warning">▸</span> Desarrollo de pipelines ML desde cero<br>
-   <span class="warning">▸</span> Computer Vision, NLP y procesamiento de datos<br>
-   <span class="warning">▸</span> Arquitecturas cloud (AWS, Azure) y containerización<br>
-   <span class="warning">▸</span> Gestión de equipos técnicos multidisciplinares<br><br>
-
-<span class="success">🏆 Logros Destacados:</span><br>
-   <span class="warning">▸</span> <span class="info">Reducción 5x</span> en tiempo de procesamiento documental<br>
-   <span class="warning">▸</span> <span class="info">+60%</span> incremento en visualizaciones de datos<br>
-   <span class="warning">▸</span> <span class="info">80%</span> reducción en tiempo de extracción de datos<br>
-   <span class="warning">▸</span> Liderazgo en equipos que <span class="info">multiplicaron</span> su tamaño<br><br>
-
-<span class="success">🎓 Formación:</span> <span class="info">PhD + Master en UCM | Psychology + ML</span><br>
-<span class="success">💡 Mindset:</span> <span class="info">Entrepreneurial | Customer-centric | MVP</span>`,
-
-            help: `<div class="section-header">📖 COMANDOS DISPONIBLES</div>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><br>
-
-<span class="success">📋 Información Personal:</span><br>
-   <span class="warning">whoami</span>               - Información básica sobre José<br><br>
-   
-<span class="success">📄 Secciones del CV:</span><br>
-   <span class="warning">cat experience.txt</span>   - Ver experiencia profesional completa<br>
-   <span class="warning">cat education.txt</span>    - Ver formación académica y certificaciones<br>
-   <span class="warning">cat skills.txt</span>       - Ver habilidades técnicas con niveles<br>
-   <span class="warning">cat projects.txt</span>     - Ver proyectos destacados con detalles<br>
-   <span class="warning">cat contact.txt</span>      - Ver información de contacto completa<br><br>
-   
-<span class="success">🔧 Comandos del Sistema:</span><br>
-   <span class="warning">ls</span> / <span class="warning">ls -la</span>          - Listar archivos disponibles<br>
-   <span class="warning">clear</span>               - Limpiar pantalla del terminal<br>
-   <span class="warning">help</span>                - Mostrar esta ayuda (comando actual)<br>
-   <span class="warning">exit</span>                - Volver al sitio principal<br>
-   <span class="warning">history</span>             - Ver historial de comandos ejecutados<br><br>
-   
-<span class="success">🎯 Comandos Rápidos (alias):</span><br>
-   <span class="warning">experience</span> = <span class="info">cat experience.txt</span><br>
-   <span class="warning">education</span>  = <span class="info">cat education.txt</span><br>
-   <span class="warning">skills</span>     = <span class="info">cat skills.txt</span><br>
-   <span class="warning">projects</span>   = <span class="info">cat projects.txt</span><br>
-   <span class="warning">contact</span>    = <span class="info">cat contact.txt</span><br><br>
-
-<span class="info">💡 Tips:</span><br>
-   <span class="warning">▸</span> Usa las flechas ↑↓ para navegar por el historial<br>
-   <span class="warning">▸</span> Tab para autocompletar comandos (próximamente)<br>
-   <span class="warning">▸</span> Todos los comandos son case-insensitive<br>
-   <span class="warning">▸</span> Puedes usar tanto los nombres completos como los alias`
-        };
-
-        // Command processing
-        function processCommand(command) {
-            const cmd = command.trim().toLowerCase();
-            
-            switch(cmd) {
-                case 'whoami':
-                    return cvData.whoami;
-                case 'ls':
-                    return '<span class="info">total 5</span><br><span class="warning">experiencia.txt  educacion.txt  habilidades.txt  proyectos.txt  contacto.txt</span>';
-                case 'ls -la':
-                case 'ls -l':
-                    return `<span class="success">total 5</span><br>
-<span class="info">-rw-r--r-- 1 jose jose 1.2K mar 31 12:00</span> <span class="warning">experiencia.txt</span><br>
-<span class="info">-rw-r--r-- 1 jose jose 0.8K mar 31 12:00</span> <span class="warning">educacion.txt</span><br>
-<span class="info">-rw-r--r-- 1 jose jose 1.5K mar 31 12:00</span> <span class="warning">habilidades.txt</span><br>
-<span class="info">-rw-r--r-- 1 jose jose 2.1K mar 31 12:00</span> <span class="warning">proyectos.txt</span><br>
-<span class="info">-rw-r--r-- 1 jose jose 0.6K mar 31 12:00</span> <span class="warning">contacto.txt</span>`;
-                case 'cat experience.txt':
-                case 'experience':
-                    return cvData.experience;
-                case 'cat education.txt':
-                case 'cat educacion.txt':
-                case 'education':
-                case 'educacion':
-                    return cvData.education;
-                case 'cat skills.txt':
-                case 'cat habilidades.txt':
-                case 'skills':
-                case 'habilidades':
-                    return cvData.skills;
-                case 'cat projects.txt':
-                case 'cat proyectos.txt':
-                case 'projects':
-                case 'proyectos':
-                    return cvData.projects;
-                case 'cat contact.txt':
-                case 'cat contacto.txt':
-                case 'contact':
-                case 'contacto':
-                    return cvData.contact;
-                case 'help':
-                case '--help':
-                case '-h':
-                    return cvData.help;
-                case 'history':
-                    return commandHistory.length > 0 ? 
-                           `<span class="info">Historial de comandos:</span><br>${commandHistory.map((cmd, i) => `<span class="warning">${i + 1}.</span> ${cmd}`).join('<br>')}` :
-                           '<span class="warning">No hay comandos en el historial</span>';
-                case 'clear':
-                case 'cls':
-                    return 'CLEAR_SCREEN';
-                case 'exit':
-                case 'quit':
-                    window.location.href = '/';
-                    return '';
-                case 'pwd':
-                    return '<span class="info">/home/jose</span>';
-                case 'date':
-                    return `<span class="info">${new Date().toLocaleString('es-ES', { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    })}</span>`;
-                case 'uname':
-                case 'uname -a':
-                    return '<span class="success">Linux estetica 5.15.0 #1 SMP José Terminal CV x86_64 GNU/Linux</span>';
-                case '':
-                    return '';
-                default:
-                    const suggestions = getSuggestions(cmd);
-                    return `<span class="error">bash: ${command}: command not found</span><br>${suggestions}`;
-            }
-        }
-
-        // Function to provide command suggestions
-        function getSuggestions(cmd) {
-            const commands = ['whoami', 'ls', 'cat', 'help', 'clear', 'exit', 'history', 'pwd', 'date', 'uname'];
-            const files = ['experience.txt', 'education.txt', 'skills.txt', 'projects.txt', 'contact.txt'];
-            const aliases = ['experience', 'education', 'skills', 'projects', 'contact'];
-            
-            const allCommands = [...commands, ...files.map(f => `cat ${f}`), ...aliases];
-            const matches = allCommands.filter(c => c.includes(cmd) || cmd.includes(c.split(' ')[0]));
-            
-            if (matches.length > 0) {
-                return `<span class="info">¿Quizás querías decir?</span> <span class="warning">${matches.slice(0, 3).join(', ')}</span>`;
-            }
-            return '<span class="info">Tipo \'help\' para ver comandos disponibles</span>';
-        }
-
-        // Handle command input with enhanced functionality
-        terminalInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const command = terminalInput.value;
-                if (command.trim() !== '') {
-                    commandHistory.push(command);
-                }
-                historyIndex = commandHistory.length;
-                
-                // Add command to output with enhanced prompt
-                const commandLine = document.createElement('div');
-                commandLine.className = 'matrix-text';
-                commandLine.innerHTML = `<span class="user">jose</span><span class="prompt">@</span><span class="host">estetica</span><span class="prompt">:</span><span class="path">~</span><span class="prompt">$</span> <span class="command">${command}</span>`;
-                terminalOutput.appendChild(commandLine);
-                
-                // Process command
-                const result = processCommand(command);
-                
-                if (result === 'CLEAR_SCREEN') {
-                    terminalOutput.innerHTML = '';
-                } else if (result) {
-                    const resultDiv = document.createElement('div');
-                    resultDiv.className = 'matrix-text';
-                    resultDiv.innerHTML = result;
-                    resultDiv.style.marginBottom = '15px';
-                    terminalOutput.appendChild(resultDiv);
-                }
-                
-                // Clear input
-                terminalInput.value = '';
-                
-                // Scroll to bottom
-                terminalContent.scrollTop = terminalContent.scrollHeight;
-                
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (historyIndex > 0) {
-                    historyIndex--;
-                    terminalInput.value = commandHistory[historyIndex];
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex < commandHistory.length - 1) {
-                    historyIndex++;
-                    terminalInput.value = commandHistory[historyIndex];
+        function typeCommand(el, text, done) {
+            let i = 0;
+            (function tick() {
+                if (i <= text.length) {
+                    el.textContent = text.slice(0, i++);
+                    setTimeout(tick, 45 + Math.random() * 55);
                 } else {
-                    historyIndex = commandHistory.length;
-                    terminalInput.value = '';
+                    done();
                 }
-            } else if (e.key === 'Tab') {
-                e.preventDefault();
-                // Auto-complete functionality could be added here
-                const input = terminalInput.value.toLowerCase();
-                const commands = ['whoami', 'ls', 'help', 'clear', 'exit', 'history', 'experience', 'education', 'skills', 'projects', 'contact'];
-                const matches = commands.filter(cmd => cmd.startsWith(input));
-                if (matches.length === 1) {
-                    terminalInput.value = matches[0];
-                }
+            })();
+        }
+
+        // Replay: JSON con meta al claro + frames en zlib+base64, generado
+        // por static/orbits.py --web. Se elige la rejilla según el viewport.
+        const replay = document.getElementById('replay');
+        const status = document.getElementById('status');
+        let current = null;  // {cols, frames} para re-escalado en resize
+
+        function fitFont(cols) {
+            const avail = replay.parentElement.clientWidth;
+            // Courier New: ancho de carácter = 0.6em. Tope 16px.
+            replay.style.fontSize =
+                Math.min(16, Math.max(4, avail / (cols * 0.6))) + 'px';
+        }
+
+        async function loadReplay(url) {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(url + ' -> ' + res.status);
+            const doc = await res.json();
+            if (typeof DecompressionStream === 'undefined') {
+                throw new Error('este navegador no soporta DecompressionStream');
             }
+            const bytes = Uint8Array.from(atob(doc.data), c => c.charCodeAt(0));
+            const stream = new Blob([bytes]).stream()
+                .pipeThrough(new DecompressionStream('deflate'));
+            const text = await new Response(stream).text();
+            return { doc, frames: JSON.parse(text) };
+        }
+
+        function play(doc, frames) {
+            current = { cols: doc.cols };
+            fitFont(doc.cols);
+            let i = 0;
+            replay.textContent = frames[0];
+            setInterval(() => {
+                replay.textContent = frames[++i % frames.length];
+            }, 1000 / doc.fps);
+        }
+
+        async function start() {
+            const small = window.matchMedia('(max-width: 760px)').matches;
+            const url = small
+                ? "{{ url_for('static', filename='data/orbits-mobile.json') }}"
+                : "{{ url_for('static', filename='data/orbits-desktop.json') }}";
+            try {
+                const { doc, frames } = await loadReplay(url);
+                status.textContent = '# replay: ' + doc.cols + 'x' + doc.rows +
+                    ', ' + doc.count + ' frames @ ' + doc.fps + 'fps';
+                play(doc, frames);
+            } catch (e) {
+                status.textContent = '> replay no disponible: ' + e.message;
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            if (current) fitFont(current.cols);
         });
 
-        // Keep input focused
-        document.addEventListener('click', function() {
-            terminalInput.focus();
-        });
+        // arranque: se escribe el comando y arranca la simulación
+        typeCommand(document.getElementById('typed'), COMMAND, start);
 
         // Dark Mode Toggle Functionality (adapted for terminal)
         function toggleDarkMode() {
             const body = document.body;
             const modeIcon = document.getElementById('mode-icon');
-            
+
             if (body.getAttribute('data-theme') === 'dark') {
                 body.removeAttribute('data-theme');
                 modeIcon.className = 'fa fa-moon-o fa-stack-1x';
@@ -803,7 +370,7 @@ Tipo 'help' para ver comandos disponibles
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme');
             const modeIcon = document.getElementById('mode-icon');
-            
+
             if (savedTheme === 'dark' || (savedTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.setAttribute('data-theme', 'dark');
                 modeIcon.className = 'fa fa-sun-o fa-stack-1x';
@@ -812,19 +379,7 @@ Tipo 'help' para ver comandos disponibles
             }
         }
 
-        // Initialize everything
         initializeTheme();
-        terminalInput.focus();
-
-        // Add some startup animation
-        setTimeout(() => {
-            const elements = document.querySelectorAll('.matrix-text');
-            elements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.style.opacity = '1';
-                }, index * 100);
-            });
-        }, 500);
     </script>
 </body>
 </html>
