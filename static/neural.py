@@ -30,6 +30,7 @@ import argparse
 import base64
 import json
 import math
+import os
 import random
 import shutil
 import sys
@@ -447,6 +448,10 @@ def main():
             cols, rows = shutil.get_terminal_size()
             cols, rows = cols - 1, rows - 1
     except KeyboardInterrupt:
+        return
+    except BrokenPipeError:
+        # el visitante cortó la salida (p. ej. `| head`): ni rastro de error
+        os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
         return
 
 
