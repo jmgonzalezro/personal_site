@@ -402,6 +402,16 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     /* Eliminar margin-left para que mantenga el espaciado natural */
 }
 
+/* Iconos sociales del índice: los cuatro caen dentro de una marginnote del
+   15% de ancho, así que en escritorio van en 2x2 en vez de repartirse 3+1.
+   En móvil vuelven a fila (regla al final del @media de 760px). */
+.marginnote.social-icons {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: start;
+    gap: 0.15rem 0.1rem;
+}
+
 /* Mismo breakpoint (760px) que el @media de tufte.min.css: con 600px la
    zona 601–760px (móvil apaisado/tablets pequeñas) se quedaba sin adaptar. */
 @media screen and (max-width: 760px) {
@@ -803,5 +813,12 @@ p.flash {
         /* fa-stack escala en em: 1rem = botones de tema/idioma */
         font-size: 1rem;
         text-align: left;
+    }
+
+    /* Los cuatro iconos del índice caben en una fila con el ancho del móvil */
+    section > span.marginnote.social-icons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 }

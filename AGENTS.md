@@ -60,8 +60,9 @@ Verificación mínima tras un cambio: arrancar la app y recorrer la ruta afectad
 
 - Cadenas en el dict `TRANSLATIONS` de `app.py`; las plantillas las usan como
   `t.<clave>`. Una clave nueva hay que añadirla en `es` y en `en`.
-- El idioma vive en la cookie `lang` (botón EN/ES). El CV (`terminal.html`)
-  está solo en español a propósito: no lo traduzcas.
+- El idioma vive en la cookie `lang` (botón EN/ES). `/cv` está solo en inglés a
+  propósito y no usa `TRANSLATIONS`: no lo traduzcas ni le añadas el botón de
+  idioma. `/cv-terminal` (la demo) tampoco tiene selector.
 
 ## Traducción al inglés (posts/en/)
 
@@ -91,10 +92,37 @@ Verificación mínima tras un cambio: arrancar la app y recorrer la ruta afectad
 
 - `app.py` único módulo. Rutas: `/` (índice con **todos** los posts, del más
   reciente al más antiguo; scroll, sin paginación),
-  `/posts/<slug>`, `/cv-terminal`. `/debug/posts` devuelve 404 a propósito.
-- `templates/`: `index.html`, `post.html`, `terminal.html` (demo de ML).
-- CSS: `static/css/base.css` es el propio; `tufte*`, `font-awesome*`,
-  `fot-awesome*` son de terceros: no editar.
+  `/posts/<slug>`, `/cv`, `/cv-terminal`. `/debug/posts` devuelve 404 a
+  propósito.
+- `templates/`: `index.html`, `post.html`, `cv.html` (CV), `terminal.html`
+  (demo de ML).
+- CSS: `static/css/base.css` es el propio; `cv.css` solo se carga en `/cv`;
+  `tufte*`, `font-awesome*`, `fot-awesome*` son de terceros: no editar.
+
+## CV (/cv)
+
+- La fuente de verdad es `templates/cv.html`: página HTML pública e indexable,
+  en inglés, con el CV de 9+ años. El PDF (`static/cv.pdf`) se genera desde esa
+  misma página, no se edita a mano.
+- Sin teléfono a propósito (solo email, LinkedIn, GitHub y web): la página es
+  pública y el móvil solo atrae spam.
+- No lleva botón de tema ni de idioma; respeta el tema guardado en
+  `localStorage` igual que el resto del sitio.
+- Regenerar el PDF tras tocar `cv.html` o `cv.css`:
+
+  ```bash
+  ./venv/bin/pip install weasyprint      # dependencia solo de desarrollo
+  ./venv/bin/python scripts/build_cv_pdf.py
+  ```
+
+  El script levanta la app en un puerto local efímero y renderiza
+  `http://127.0.0.1:<puerto>/cv` con WeasyPrint. Tarda unos segundos y deja
+  `static/cv.pdf` (3 páginas A4, ~38 KB) en el repo: **commitea el PDF** junto
+  al HTML. En PythonAnywhere no hace falta WeasyPrint, solo el fichero.
+- Los estilos de impresión viven en el bloque `@media print` de `cv.css`
+  (`@page` A4, tema claro forzado, sin nav/pie/botón, sin partir viñetas). Si
+  cambias algo del CV, revisa también el PDF: `pdftoppm -r 90 -png static/cv.pdf /tmp/cv`
+  y mira las páginas.
 
 ## Demo de entrenamiento en /cv-terminal
 

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CV of José Manuel González Rodríguez — Senior Data Scientist &amp; Machine Learning Engineer.">
+    <link rel="icon" href="{{ url_for('static', filename='terminal_icon.ico') }}" type="image/x-icon">
+    <title>CV — José M. González Rodríguez</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tufte.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}" type="text/css" media="all">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cv.css') }}" type="text/css" media="all">
+</head>
+
+<body class="cv-page">
+    <header class="post-header">
+        <nav>
+            <a href="{{ url_for('index') }}">Estética @ online</a> / <span>CV</span>
+        </nav>
+        <hr>
+    </header>
+
+    <main class="cv">
+        <header class="cv-head">
+            <h1>José Manuel González Rodríguez</h1>
+            <p class="cv-role">Senior Data Scientist / Machine Learning Engineer</p>
+            <p class="cv-contact">
+                <a href="mailto:jmgonzalezro@gmail.com">jmgonzalezro@gmail.com</a>
+                <span class="sep">·</span>
+                <a href="https://linkedin.com/in/jmgonzalezro">linkedin.com/in/jmgonzalezro</a>
+                <span class="sep">·</span>
+                <a href="https://github.com/jmgonzalezro">github.com/jmgonzalezro</a>
+                <span class="sep">·</span>
+                <a href="https://www.jmgonzalezro.com">jmgonzalezro.com</a>
+            </p>
+            <p class="cv-actions">
+                <a class="cv-download" href="{{ url_for('static', filename='cv.pdf') }}">Download PDF</a>
+                <span class="cv-place">Madrid, Spain</span>
+            </p>
+        </header>
+
+        <p class="cv-summary">
+            Senior Data Scientist &amp; ML Engineer (9+ years). Design, build and deploy
+            machine learning and LLM systems end-to-end in production for enterprise
+            clients in energy, insurance, construction and telecoms — from ETL and
+            feature pipelines to deployed systems, evaluation frameworks and monitoring.
+            Track record of measurable impact (5x faster document processing, 80%
+            reduction in process automation time). ML Lead owning model KPIs and key
+            technical decisions, working with data, platform and business stakeholders.
+        </p>
+
+        <h2>Technical Skills</h2>
+        <dl class="cv-skills">
+            <dt>Languages</dt>
+            <dd>Python · SQL · Bash · R · Rust (side projects)</dd>
+            <dt>ML / AI</dt>
+            <dd>Machine Learning · NLP · Computer Vision / OCR · LLMs · RAG · Prompt
+                Engineering · LangChain · LangGraph · scikit-learn · XGBoost ·
+                Time-series Forecasting</dd>
+            <dt>Data Engineering</dt>
+            <dd>ETL / ELT · Data Pipelines · Data Quality &amp; Validation · Pandas ·
+                PySpark · PostgreSQL / pgvector · APIs (REST / Async)</dd>
+            <dt>Cloud &amp; MLOps</dt>
+            <dd>AWS (Bedrock, Textract, S3, SageMaker, Athena, DynamoDB, Secrets
+                Manager) · Azure (OpenAI, Data Factory, Data Lake, Entra ID) · Docker ·
+                Kubernetes (EKS / AKS) · CI/CD (GitHub Actions) · SonarQube · Git</dd>
+            <dt>Observability &amp; Quality</dt>
+            <dd>Elastic APM · ELK / Kibana · CloudWatch · Load Testing (Locust) · Unit
+                &amp; Integration Testing (pytest)</dd>
+            <dt>Leadership</dt>
+            <dd>ML Team Lead · Agile / Scrum · Stakeholder &amp; Cross-functional
+                Alignment · Technical Communication · Mentoring</dd>
+        </dl>
+
+        <h2>Experience</h2>
+
+        <section class="job">
+            <header class="job-head">
+                <h3>Machine Learning Lead</h3>
+                <p class="job-dates">Feb 2023 – Present<span>Madrid, Spain</span></p>
+            </header>
+            <p class="job-company">Minsait / Indra</p>
+
+            <div class="client">
+                <h4>ScottishPower / Iberdrola — 4 AI systems built and deployed</h4>
+
+                <div class="project">
+                    <h5>SPEN Document Library AI <span>— RAG/LLM assistant over 2,500+ documents (AWS Bedrock)</span></h5>
+                    <p class="project-system">
+                        Natural-language search, summarisation and Q&amp;A over 2,500+ SPEN
+                        engineering and regulatory documents (SharePoint), refreshed on a
+                        daily (24h) cycle; hybrid retrieval (cosine similarity + Postgres
+                        full-text) over pgvector, generation on Claude Sonnet 4 (AWS
+                        Bedrock) with Nova Pro fallback, Bedrock Guardrails, LangGraph
+                        orchestration, deployed with Docker on AWS EKS across
+                        DEV/PRE/PRO.
+                    </p>
+                    <ul>
+                        <li>Machine Learning Lead; owned the ingestion subsystem
+                            end-to-end: SharePoint Microsoft Graph API client with change
+                            detection (new / updated / deleted), S3 staging, LibreOffice
+                            document conversion, PostgreSQL metadata and state tables,
+                            plus a second multimodal stage — AWS Textract layout parsing,
+                            LLM-based image description, chunking — into pgvector
+                            embeddings (Amazon Titan v2).</li>
+                        <li>Built the Ofgem reference ingestion with content-hash
+                            document versioning, so the regulatory corpus can be
+                            re-indexed idempotently.</li>
+                        <li>Established the backend test and CI harness: 250 pytest
+                            tests running in GitHub Actions with SonarQube, including the
+                            boto3/pytest mocking needed to keep the suite green in
+                            CI.</li>
+                        <li>Contributed to production hardening: Locust load testing,
+                            model fallback / retry budgets and per-question latency
+                            telemetry persisted to the database.</li>
+                    </ul>
+                </div>
+
+                <div class="project">
+                    <h5>Ofgem ED3 Regulatory Compliance Engine <span>— LLM-as-judge + auto-redrafting</span></h5>
+                    <ul>
+                        <li>Translated a rubric defined by the business and compliance
+                            teams into a production AI review system: scores submissions
+                            against the Ofgem ED3 regulatory themes with per-theme
+                            pass/partial/fail thresholds, retrieves the applicable
+                            guidance by cosine similarity and automatically redrafts
+                            non-compliant sections, producing a redrafted DOCX/PDF plus
+                            a compliance report.</li>
+                        <li>Built the 4-phase assessment pipeline (score → gaps →
+                            replacement text → cross-section consistency) with strict
+                            JSON schemas validated by Pydantic, an async redraft stage
+                            with concurrency control on LLM calls, and Word
+                            table/section parsing into the assessment digest.</li>
+                        <li>Designed the chunked upload API for large submissions (files
+                            over 1MB split into ~900KB chunks, up to ~90MB) and
+                            instrumented each stage with perf_counter metrics for
+                            latency tracking.</li>
+                    </ul>
+                </div>
+
+                <div class="project">
+                    <h5>Non-Conformity Email Action Tracker <span>— LLM microservice (Azure OpenAI)</span></h5>
+                    <ul>
+                        <li>Microservice that summarises offshore-wind non-conformity
+                            email threads and extracts structured action items (owner
+                            organisation, description, due date) as machine-readable
+                            JSON, consumed by an Azure Data Factory pipeline; deployed
+                            on Azure AKS with Docker and Elastic APM.</li>
+                        <li>Owned production reliability of the LLM output contract:
+                            robust JSON parsing of model responses with graceful
+                            fallbacks, structured exception handling, timeouts,
+                            token-limit tuning and adaptation to a new OpenAI API
+                            version.</li>
+                        <li>Maintained the 17-test pytest suite covering the ADF
+                            payload contract and failure modes.</li>
+                    </ul>
+                </div>
+
+                <div class="project">
+                    <h5>ACONEX Document Compliance Pipeline <span>— OCR + LLM batch validation</span></h5>
+                    <ul>
+                        <li>Automated pre-review pipeline that pulls every new/modified
+                            engineering document from Oracle ACONEX and validates it
+                            against document-specific technical requirements before
+                            human review: AWS Textract QUERIES/LAYOUT extraction +
+                            Claude Sonnet 4.5 (Bedrock) for visual/semantic checks, a
+                            declarative rule engine (15 reusable check definitions →
+                            12–14 checks per document type) with fuzzy/date/boolean
+                            comparators and per-check confidence → compliance score
+                            and ready-for-review flag. Batch flow: async ingestion →
+                            LibreOffice → S3 → Textract/Bedrock → PostgreSQL state
+                            machine → JSON in Azure Data Lake, orchestrated by BMC
+                            Control-M on EKS.</li>
+                        <li>Took the pipeline from functional prototype to
+                            production-grade performance and scalability, owning the
+                            processing and ingestion stages:
+                            <ul>
+                                <li>Created the memory monitoring and optimisation
+                                    layer after the processing stage proved
+                                    memory-bound: memory monitor utility, streaming of
+                                    Textract responses, tuned Bedrock page limits,
+                                    per-file size validation.</li>
+                                <li>Built a profiling framework (cProfile and memory
+                                    profiling for both ingestion and processing stages,
+                                    cloud/S3 profiling, profile comparison and automated
+                                    reports) to measure where time and memory were going
+                                    before optimising.</li>
+                                <li>Introduced incremental processing — delta-window
+                                    filtering, download size limiters and an
+                                    ingestion-progress migration — so the daily batch
+                                    no longer reprocessed the whole corpus.</li>
+                                <li>Extended the validation engine: created the content
+                                    validator, extended the comparison engine, and added
+                                    rejected-document checks requested by the
+                                    document-control team.</li>
+                                <li>Fixed end-to-end result delivery: Azure Data Lake
+                                    upload path, JSON output persistence to S3 and
+                                    processing-state consistency.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="tech">
+                    <span>Stack</span> Python · FastAPI · AWS Bedrock (Claude, Nova,
+                    Titan) · Azure OpenAI · AWS Textract · LangChain · LangGraph ·
+                    PostgreSQL / pgvector · Pandas · Docker · Kubernetes (EKS / AKS) ·
+                    GitHub Actions · SonarQube · Elastic APM · Azure Data Factory /
+                    Data Lake · SQL · Git
+                </p>
+            </div>
+
+            <div class="client">
+                <h4>Mapfre — insurance</h4>
+                <ul>
+                    <li>Machine Learning Lead in cross-selling projects for an
+                        insurance company.</li>
+                    <li>Applied state-of-the-art ML models for prediction and
+                        classification, developing end-to-end pipelines from data
+                        extraction to training and evaluation.</li>
+                    <li>Designed the model benchmarking and monitoring system:
+                        comparison of model variants and tracking of their results
+                        over time, with reporting of model performance.</li>
+                </ul>
+                <p class="tech"><span>Stack</span> Python · Pandas · Docker · XGBoost ·
+                    scikit-learn · Gitflow · Tesseract · OpenCV · AWS · SQL · Git</p>
+            </div>
+
+            <div class="client">
+                <h4>Endesa / Enel Spain — energy</h4>
+                <ul>
+                    <li>Lead developer of 2 projects predicting energy consumption and
+                        billing for large corporate clients.</li>
+                    <li>Refactored and maintained 3 legacy projects, automating
+                        deployment and results visualisation, and proposing ML and
+                        Python best practices that improved reproducibility,
+                        portability and CI/CD.</li>
+                    <li>Team Manager of internal and external staff, more than doubling
+                        the team in less than a year while onboarding and mentoring new
+                        members.</li>
+                    <li>Technical point of contact between the development team and
+                        business stakeholders.</li>
+                </ul>
+                <p class="tech"><span>Stack</span> Python · Pandas · Random Forest ·
+                    scikit-learn · Gitflow · Azure · Bitbucket · SQL · Git</p>
+            </div>
+
+            <div class="client">
+                <h4>Dragados — construction</h4>
+                <ul>
+                    <li>Lead of multiple cross-functional projects for automated data
+                        extraction from construction documentation, reducing
+                        documentation handling time by 5x.</li>
+                    <li>Designed and developed an ML pipeline from scratch: Computer
+                        Vision for OCR and text parsing, plus automation of the ETL
+                        process.</li>
+                    <li>Coach and advisor to the team on Agile principles and an MVP,
+                        user-centered mindset, ensuring quality and knowledge sharing —
+                        establishing new communication channels and daily knowledge
+                        sharing across the whole development team.</li>
+                </ul>
+                <p class="tech"><span>Stack</span> Python · Pandas · Docker · Tesseract ·
+                    OpenCV · Azure · Bitbucket · SQL</p>
+            </div>
+        </section>
+
+        <section class="job">
+            <header class="job-head">
+                <h3>Machine Learning Engineer &amp; Data Scientist</h3>
+                <p class="job-dates">Aug 2021 – Feb 2023<span>Madrid, Spain</span></p>
+            </header>
+            <p class="job-company">Sanz Clima</p>
+            <ul>
+                <li>Developed ML projects for business clients focused on prediction and
+                    optimisation, generating value for our clients.</li>
+                <li>Extracted, cleaned, transformed and served large volumes of data
+                    using AWS cloud services (S3, Boto3, Athena, DynamoDB).</li>
+                <li>Launched an interactive dashboard application with a
+                    consumer-centric GUI, becoming a key product for the sales
+                    department.</li>
+            </ul>
+            <p class="tech"><span>Stack</span> Python · PySpark · AWS (S3, Athena,
+                SageMaker, DynamoDB) · scikit-learn · Docker · Linux · Flask · KNN ·
+                K-Means · Git</p>
+        </section>
+
+        <section class="job">
+            <header class="job-head">
+                <h3>ML &amp; Data Scientist</h3>
+                <p class="job-dates">Aug 2020 – Aug 2021<span>Madrid, Spain</span></p>
+            </header>
+            <p class="job-company">Ayscom</p>
+            <ul>
+                <li>Increased data visualisations delivered to clients by 60%.</li>
+                <li>Automated data extraction processes, reducing processing time by
+                    80% (from minutes to seconds).</li>
+                <li>Built NLP-based data cleansing processes, replacing a manual
+                    workflow with an automated one and improving output quality.</li>
+            </ul>
+            <p class="tech"><span>Stack</span> Python · Pandas · NLP · XML · Linux ·
+                CassandraDB · SQL · Grafana · SSH</p>
+        </section>
+
+        <section class="job">
+            <header class="job-head">
+                <h3>Data Analyst</h3>
+                <p class="job-dates">Aug 2017 – Aug 2020<span>Madrid, Spain</span></p>
+            </header>
+            <p class="job-company">Sanitas</p>
+            <ul>
+                <li>Extracted, transformed and processed company data to produce
+                    reporting, presentations and visualisations.</li>
+                <li>Created automated data extraction and pre-processing routines and
+                    maintained the historical reporting database.</li>
+            </ul>
+            <p class="tech"><span>Stack</span> Excel · Tableau · Power BI · SQL</p>
+        </section>
+
+        <h2>Education</h2>
+        <dl class="cv-education">
+            <dt>PhD in Developmental Psychology and Machine Learning</dt>
+            <dd>Complutense University <span>2017 – 2020</span></dd>
+            <dt>Master in Data Science and Machine Learning</dt>
+            <dd>Complutense University <span>2019 – 2020</span></dd>
+        </dl>
+    </main>
+
+    <footer class="cv-footer">
+        <hr>
+        <a href="{{ url_for('index') }}">← Back to the blog</a>
+    </footer>
+
+    <script>
+        // Respeta el tema guardado por el resto del sitio, sin botón aquí:
+        // la página es un documento y se imprime igual en claro.
+        (function () {
+            var saved = localStorage.getItem('theme');
+            if (saved === 'dark' || (saved === null &&
+                    window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+</body>
+</html>

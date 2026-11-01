@@ -172,6 +172,14 @@ def post(post_name):
     return set_no_cache_headers(response)
 
 
+@app.route("/cv")
+def cv():
+    # Página estática en inglés (única del sitio fuera del selector ES/EN) y
+    # sin datos de idioma: no usa TRANSLATIONS a propósito.
+    response = make_response(render_template("cv.html"))
+    return set_no_cache_headers(response)
+
+
 @app.route("/cv-terminal")
 def cv_terminal():
     response = make_response(render_template("terminal.html"))

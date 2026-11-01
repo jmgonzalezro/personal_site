@@ -1,0 +1,634 @@
+@charset "UTF-8";
+
+/* Estilos de /cv.
+   base.css está pensado para posts (body desplazado a la izquierda, secciones
+   al 55%, listas al 50%); aquí se sobreescribe todo eso con una columna
+   centrada y compacta. La misma hoja sirve para pantalla y para el PDF que
+   genera scripts/build_cv_pdf.py con WeasyPrint: las reglas @media print
+   convierten la página en un A4 en claro, sin nav ni botones. */
+
+/* ---------------------------------------------------------------------------
+   Página
+   --------------------------------------------------------------------------- */
+
+body.cv-page {
+    /* base.css: margin-top 9.5rem, margin-left 20%, max-width 1400px */
+    margin: 3.5rem auto 5rem;
+    width: min(88%, 54rem);
+    max-width: 54rem;
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
+.cv {
+    font-size: 1.05rem;
+}
+
+.cv a {
+    color: inherit;
+}
+
+/* Cabecera de navegación (misma que los posts) */
+.cv-page .post-header {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.cv-page .post-header hr {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Cabecera del CV
+   --------------------------------------------------------------------------- */
+
+.cv-head {
+    margin-bottom: 1.5rem;
+}
+
+.cv-head h1 {
+    margin: 0 0 0.2rem;
+    font-size: 2.5rem;
+    line-height: 1.05;
+    font-weight: 400;
+}
+
+.cv-role {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-color-secondary);
+}
+
+.cv-contact {
+    margin: 0 0 0.9rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.cv-contact .sep {
+    color: var(--text-color-secondary);
+    margin: 0 0.15rem;
+}
+
+.cv-actions {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.cv-download {
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: none;
+    text-shadow: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.cv-download:hover,
+.cv-download:active {
+    color: green;
+    border-color: green;
+}
+
+.cv-place {
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+}
+
+/* El resumen va sangrado y en cuerpo algo mayor: es el párrafo que lee el
+   reclutador; el resto es referencia. */
+.cv-summary {
+    margin: 0 0 2rem;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--border-color);
+    font-size: 1.08rem;
+    line-height: 1.5;
+    max-width: none;
+    width: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Secciones (Technical Skills, Experience, Education)
+   --------------------------------------------------------------------------- */
+
+.cv h2 {
+    margin: 2.2rem 0 1rem;
+    font-size: 1.05rem;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-color-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3rem;
+    line-height: 1.2;
+}
+
+/* base.css da a h3 line-height: 0 y color secundario */
+.cv h3 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--text-color-main);
+}
+
+.cv h4 {
+    margin: 1.2rem 0 0.35rem;
+    font-size: 1.02rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+.cv h5 {
+    margin: 0.9rem 0 0.3rem;
+    font-size: 0.98rem;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: small-caps;
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+}
+
+.cv h5 span {
+    font-variant: normal;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-color-secondary);
+}
+
+.cv p {
+    font-size: 1rem;
+    margin: 0.35rem 0;
+    max-width: none;
+}
+
+.cv ul {
+    font-size: 1rem;
+    line-height: 1.45;
+    margin: 0.3rem 0 0.5rem;
+    padding-left: 1.1rem;
+    width: auto;
+}
+
+/* Listas anidadas (las sub-viñetas del pipeline ACONEX) */
+.cv ul ul {
+    margin: 0.25rem 0 0.25rem;
+    font-size: 0.96rem;
+}
+
+.cv li {
+    margin: 0 0 0.25rem;
+    padding-left: 0.1rem;
+}
+
+.cv li::marker {
+    color: var(--text-color-secondary);
+}
+
+/* base.css recorta el ancho de las listas y párrafos dentro de section */
+.cv section,
+.cv section > p,
+.cv section > ul,
+.cv section > footer,
+.cv section > dl,
+.cv section > ol {
+    width: 100%;
+    padding: 0;
+}
+
+.cv section {
+    font-size: 1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Experiencia
+   --------------------------------------------------------------------------- */
+
+.cv .job {
+    padding: 1.4rem 0 0;
+    border-top: 1px solid var(--border-color);
+    break-inside: auto;
+}
+
+.cv .job:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.job-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+}
+
+.job-dates {
+    margin: 0;
+    font-size: 0.88rem;
+    text-align: right;
+    white-space: nowrap;
+    color: var(--text-color-secondary);
+}
+
+.job-dates span {
+    font-size: 0.85rem;
+}
+
+.job-dates span::before {
+    content: " · ";
+}
+
+.job-company {
+    margin: 0.1rem 0 0.2rem;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text-color-secondary);
+}
+
+.client {
+    margin-top: 0.4rem;
+}
+
+/* Línea de stack: pequeña, gris, con la etiqueta en versalitas */
+.cv .tech {
+    margin: 0.5rem 0 0.9rem;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--text-color-secondary);
+}
+
+.tech > span {
+    font-variant: small-caps;
+    letter-spacing: 0.08em;
+    margin-right: 0.35rem;
+}
+
+.tech > span::after {
+    content: ":";
+}
+
+.project-system {
+    margin: 0.2rem 0 0.3rem;
+    font-size: 0.95rem;
+    color: var(--text-color-main);
+}
+
+/* ---------------------------------------------------------------------------
+   Skills y educación: lista de definiciones en dos columnas
+   --------------------------------------------------------------------------- */
+
+.cv dl {
+    font-size: 0.98rem;
+    line-height: 1.45;
+    margin: 0.3rem 0 0;
+    width: auto;
+}
+
+.cv-skills,
+.cv-education {
+    display: grid;
+    grid-template-columns: 10.5rem 1fr;
+    gap: 0.3rem 1.2rem;
+}
+
+.cv-skills dt,
+.cv-education dt {
+    color: var(--text-color-secondary);
+    font-style: italic;
+}
+
+.cv-skills dd,
+.cv-education dd {
+    margin: 0;
+}
+
+.cv-education dd span {
+    color: var(--text-color-secondary);
+    margin-left: 0.4rem;
+}
+
+.cv-education {
+    grid-template-columns: 1fr auto;
+}
+
+.cv-education dd {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   Pie
+   --------------------------------------------------------------------------- */
+
+.cv-footer {
+    margin-top: 3rem;
+    font-size: 0.95rem;
+}
+
+.cv-footer hr {
+    width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Móvil
+   --------------------------------------------------------------------------- */
+
+@media screen and (max-width: 760px) {
+    body.cv-page {
+        margin: 2.2rem auto 3rem;
+        width: 92%;
+    }
+
+    .cv-head h1 {
+        font-size: 2rem;
+    }
+
+    .cv-role {
+        font-size: 1.05rem;
+    }
+
+    .cv-contact {
+        font-size: 0.88rem;
+        /* cada dato en su línea: con enlaces largos no caben dos por renglón */
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.15rem 0;
+    }
+
+    .cv-contact .sep {
+        display: none;
+    }
+
+    .cv-contact a {
+        flex-basis: 100%;
+        line-height: 1.5;
+    }
+
+    .cv-actions {
+        flex-wrap: wrap;
+        gap: 0.6rem;
+    }
+
+    .cv h2 {
+        margin-top: 2rem;
+    }
+
+    .job-head {
+        display: block;
+    }
+
+    .job-dates {
+        text-align: left;
+        white-space: normal;
+        margin-top: 0.15rem;
+    }
+
+    .cv-skills,
+    .cv-education {
+        grid-template-columns: 1fr;
+        gap: 0.15rem;
+    }
+
+    .cv-skills dt,
+    .cv-education dt {
+        margin-top: 0.5rem;
+    }
+
+    .cv-education dd {
+        text-align: left;
+        white-space: normal;
+    }
+
+    .cv-education dd span {
+        display: block;
+        margin-left: 0;
+    }
+
+    .cv .tech {
+        margin-bottom: 0.8rem;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Impresión / PDF (WeasyPrint)
+   --------------------------------------------------------------------------- */
+
+@page {
+    size: A4;
+    margin: 14mm 16mm 15mm;
+
+    @bottom-right {
+        content: counter(page) " / " counter(pages);
+        font-family: et-book, Georgia, serif;
+        font-size: 8pt;
+        color: #777;
+    }
+}
+
+@media print {
+    /* Forzamos tema claro: el PDF no debe depender del localStorage del
+       visitante ni de prefers-color-scheme. */
+    :root,
+    [data-theme="dark"] {
+        --bg-color: #ffffff;
+        --text-color-main: #111111;
+        --text-color-secondary: #555555;
+        --border-color: #bbbbbb;
+        --link-bg-color: #ffffff;
+        --shadow-color: #ffffff;
+    }
+
+    html {
+        font-size: 10pt;
+    }
+
+    body.cv-page {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: #111111;
+        font-size: 9.6pt;
+        line-height: 1.4;
+    }
+
+    /* La navegación, el pie y el botón de descarga no son parte del CV */
+    .cv-page .post-header,
+    .cv-page .cv-footer,
+    .cv-actions,
+    .cv-page script {
+        display: none !important;
+    }
+
+    .cv-head h1 {
+        font-size: 20pt;
+        margin-bottom: 2pt;
+    }
+
+    .cv-role {
+        font-size: 10.5pt;
+        color: #444444;
+        margin-bottom: 3pt;
+    }
+
+    .cv-contact {
+        font-size: 8.6pt;
+        margin-bottom: 0;
+    }
+
+    /* En papel los enlaces no se subrayan: el texto ya es el dato */
+    .cv a,
+    .cv a:link,
+    .cv a:visited {
+        text-decoration: none;
+        background: none;
+        text-shadow: none;
+        color: inherit;
+    }
+
+    .cv-summary {
+        margin: 8pt 0 10pt;
+        padding-left: 7pt;
+        font-size: 9.6pt;
+        line-height: 1.42;
+        border-left: 1pt solid #999999;
+    }
+
+    .cv h2 {
+        font-size: 9.5pt;
+        letter-spacing: 0.13em;
+        margin: 12pt 0 5pt;
+        padding-bottom: 2pt;
+        break-after: avoid;
+        break-inside: avoid;
+    }
+
+    .cv h3 {
+        font-size: 11.5pt;
+    }
+
+    .cv h4 {
+        font-size: 9.8pt;
+        margin: 8pt 0 2pt;
+        break-after: avoid;
+    }
+
+    .cv h5 {
+        font-size: 9.5pt;
+        margin: 6pt 0 1pt;
+        break-after: avoid;
+    }
+
+    .cv p {
+        font-size: 9.4pt;
+        margin: 2pt 0;
+        orphans: 3;
+        widows: 3;
+    }
+
+    .cv ul {
+        font-size: 9.4pt;
+        line-height: 1.38;
+        margin: 1pt 0 3pt;
+        padding-left: 12pt;
+    }
+
+    .cv ul ul {
+        font-size: 9.1pt;
+        margin: 1pt 0;
+    }
+
+    .cv li {
+        margin-bottom: 1.2pt;
+        break-inside: avoid;
+    }
+
+    .project-system {
+        font-size: 9.2pt;
+        line-height: 1.38;
+    }
+
+    .cv .tech {
+        font-size: 8.2pt;
+        line-height: 1.38;
+        margin: 2pt 0 7pt;
+        color: #555555;
+    }
+
+    /* Sin línea superior: si el trabajo empieza en una página nueva, el borde
+       queda pegado al corte y parece una raya suelta en el borde del papel. */
+    .cv .job {
+        padding-top: 9pt;
+        border-top: 0;
+    }
+
+    .cv .job:first-of-type {
+        padding-top: 0;
+    }
+
+    /* Título del puesto y empresa pegados a sus viñetas */
+    .job-head,
+    .job-company {
+        break-after: avoid;
+    }
+
+    .job-head {
+        display: flex;
+    }
+
+    .job-dates {
+        font-size: 8.6pt;
+        /* fecha y ciudad en una sola línea, como en pantalla */
+        white-space: normal;
+    }
+
+    .job-company {
+        font-size: 9.6pt;
+        margin: 1pt 0 2pt;
+    }
+
+    .cv .client {
+        margin-top: 2pt;
+        /* un cliente puede ser más largo que una página: no se fuerza evitar
+           el corte, solo se evita partir títulos y viñetas */
+        break-inside: auto;
+    }
+
+    .cv dl {
+        font-size: 9.3pt;
+        line-height: 1.38;
+    }
+
+    .cv-skills {
+        grid-template-columns: 85pt 1fr;
+        gap: 2pt 10pt;
+    }
+
+    .cv-education {
+        grid-template-columns: 1fr auto;
+        gap: 2pt 10pt;
+    }
+
+    /* Evita que el PDF arrastre el fondo crema del sitio */
+    .cv,
+    .cv * {
+        background-color: transparent;
+    }
+}
